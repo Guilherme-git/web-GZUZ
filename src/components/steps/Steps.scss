@@ -1,0 +1,90 @@
+@use '../../../constants/Colors.scss';
+
+.container-steps {
+  width: 50%;
+  margin-bottom: 2rem;
+
+  ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  li {
+    margin-right: 1rem;
+    background-color: Colors.$AZUL;
+    padding: 0.5rem;
+    border-radius: 15px;
+  }
+  li a {
+    text-decoration: none;
+    color: Colors.$BRANCO;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 80%;
+  }
+
+  .step-disabled {
+    background-color: Colors.$CINZA30;
+    cursor: not-allowed;
+  }
+}
+
+@media screen and (max-width: 1090px) {
+  .container-steps {
+    width: 60%;
+    margin-bottom: 1rem;
+
+    ul {
+      justify-content: space-evenly;
+    }
+
+    li {
+      margin-right: 0.1rem;
+      padding: 0.6rem;
+    }
+    li a {
+      font-size: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container-steps {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    ul {
+      justify-content: space-evenly;
+    }
+
+    li {
+      margin-right: 0.1rem;
+      padding: 0.6rem;
+    }
+    li a {
+      font-size: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .container-steps {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    ul {
+      justify-content: space-evenly;
+    }
+
+    li {
+      margin-right: 0.1rem;
+      padding: 0.6rem;
+    }
+    li a {
+      font-size: 45%;
+    }
+  }
+}

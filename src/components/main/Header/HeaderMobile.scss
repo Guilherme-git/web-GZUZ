@@ -1,0 +1,22 @@
+@use '../../../contants/Colors.scss';
+
+.header-mobile-container {
+  flex-grow: 1;
+
+  .header-mobile-appbar {
+    background-color: Colors.$BRANCO;
+  }
+
+  .header-mobile-toolbar {
+    justify-content: space-between;
+  }
+
+  .header-mobile-menu-button {
+    color: Colors.$BRANCO;
+    background-color: Colors.$AMARELO;
+  }
+
+  img {
+    cursor: pointer;
+  }
+}

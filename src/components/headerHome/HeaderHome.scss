@@ -1,0 +1,60 @@
+@use '../../constants/Colors.scss';
+
+.container-header-home {
+  .header-home-appbar {
+    // margin: 1rem 0;
+    background-color: Colors.$BRANCO;
+    // border-radius: 16px;
+  }
+
+  .header-home-menu-button {
+    color: Colors.$BRANCO;
+    background-color: Colors.$AMARELO;
+  }
+
+  .header-home-logo {
+    // width: 201px;
+    // height: 93px;
+    cursor: pointer;
+    // margin-left: 1rem;
+  }
+
+  .user-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin: 0 1rem;
+
+    .user-container-label {
+      display: flex;
+      flex-direction: column;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      margin-right: 1rem;
+      label {
+        font-size: 16px;
+        line-height: 150%;
+        letter-spacing: 0.15px;
+        color: rgba(0, 0, 0, 0.87);
+      }
+      span {
+        font-size: 14px;
+        line-height: 143%;
+        letter-spacing: 0.15px;
+        color: rgba(0, 0, 0, 0.54);
+      }
+    }
+
+    .icon-top {
+      transform: rotate(180deg);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .icon-down {
+      transform: rotate(360deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}

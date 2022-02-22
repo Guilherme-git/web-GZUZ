@@ -1,0 +1,138 @@
+@use '../../../contants/Colors.scss';
+
+.container-mobile {
+  display: none;
+}
+
+nav {
+  background-image: url('../../../assets/images/homeHeader.png');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 350px;
+  width: 100%;
+
+  .lista-menu {
+    list-style: none;
+    display: flex;
+  }
+
+  li a {
+    padding: 5px 15px;
+    color: Colors.$CINZA70;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    background-color: Colors.$BRANCO;
+    margin-right: 1px;
+    border-radius: 3px;
+  }
+
+  li a:hover,
+  li a.active {
+    border-radius: 5px;
+    transition: all 0.5s ease-in-out;
+    color: Colors.$BRANCO;
+    background-color: Colors.$AMARELO;
+  }
+}
+
+.container-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  cursor: pointer;
+
+  img:hover {
+    transition: all 0.5s ease-in-out;
+    transform: scale(1.1);
+  }
+}
+
+// HEADER BOTTON
+
+.header-botton {
+  background-color: Colors.$AMARELO;
+  height: 158px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    li a {
+      padding: 10px 15px;
+      color: Colors.$BRANCO;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      background-color: Colors.$GOLD;
+      margin-right: 5px;
+      border-radius: 4px;
+      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14),
+        0px 1px 5px rgba(0, 0, 0, 0.12);
+    }
+    li a:hover {
+      border-radius: 5px;
+      transition: all 0.3s ease-in-out;
+      color: Colors.$AMARELO;
+      background-color: Colors.$BRANCO;
+    }
+  }
+}
+
+@media screen and (max-width: 887px) {
+  nav {
+    height: 200px;
+    li a {
+      font-size: 9px;
+      padding: 5px 10px;
+    }
+  }
+
+  .container-menu {
+    padding-top: 1rem;
+  }
+
+  .container-flag {
+    margin-left: 1rem;
+
+    .image-flag {
+      width: 22px;
+      height: 12px;
+    }
+
+    .background-flag {
+      padding: 0.2rem;
+      margin-right: 0.3rem;
+    }
+  }
+
+  .image-logo {
+    margin-top: 0.2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container-desktop {
+    display: none;
+  }
+  .container-mobile {
+    display: block;
+  }
+}
