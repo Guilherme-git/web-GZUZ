@@ -454,7 +454,9 @@ const RegisterDriver = () => {
     weightRange: '',
     showPassword: false,
     showConfirmPassword: false,
-  });
+  });   
+
+
   
   const handleChange = (prop) => (event) => {
     console.log([prop])
