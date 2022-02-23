@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '@mui/material';
+import React, { useState, useEffect } from 'react'
+import { FormGroup, FormControlLabel, Switch, Button } from '@mui/material';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import "./styles.scss"
+import { Images } from '../../contants';
+import './styles.scss'
 import {
     HeaderHome,
-    OrdersUser,
-    MapsUser,
-    ModalSendOffer,
-    ModalProposalAccepted,
-    ModalShowImages,
+    OrdersDriver,
+    MapsDriver,
+    OrdersUser
 } from '../../components';
-import { BTN_CREATE_ORDER } from '../../config/ConfigDefault';
-// import { ListOrdersAsync } from '../../redux/CreateOrderSlice';
-import { FormGroup, FormControlLabel, Switch } from '@mui/material';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-
-import { Images } from '../../contants';
-import { makeStyles } from '@mui/styles';
 
 import {
     STATUS_RECEIVE_ORDERS_ACTIVE,
@@ -29,6 +22,7 @@ import {
     MSG_NEW_DELIVERY_BTN_PROPOSAL,
     MSG_NEW_DELIVERY_BTN_DECLINE,
 } from '../../config/ConfigDefault';
+import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -70,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     design: ({ type }) => ({
-        backgroundColor: type === 'driver' ? theme.palette.primary.AZUL : theme.palette.primary.AMARELO,
+        backgroundColor: theme.palette.primary.AZUL,
         width: '100%',
         height: '20%',
         position: 'absolute',
@@ -266,14 +260,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Index() {
+export default () => {
     const classes = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const resultRedux = useSelector(function (state) {
-        return state.login
-    });
+    const [statusDrive, setStatusDrive] = useState(false);
     const [openNewDelivery, setOpenNewDelivery] = useState(false);
     const [openSendOffer, setOpenSendOffer] = useState(false);
     const [openAcceptedProposal, setOpenAcceptedProposal] = useState(false);
@@ -287,22 +278,65 @@ export default function Index() {
     return (
         <div className="container-homeUsers">
             <HeaderHome />
-            <div className={classes.container}>
-                <div className={classes.containerItems}>
-                    <Button
-                        variant="contained"
-                        className={classes.btnNewOrder}
-                        onClick={() => navigate('ordem/create')}
-                    >
-                        {t(BTN_CREATE_ORDER)}
-                    </Button>
-                </div>
-                <div className={classes.containerItemsOrders}>
-                    <OrdersUser />
+
+            <Box className={classes.StatusDriver} sx={{ width: { xs: '100%', md: '90%' }, marginBottom: '10px' }}>
+                <label>STATUS:</label>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch checked={statusDrive} onChange={() => setStatusDrive(!statusDrive)} />
+                        }
+                        label={t(STATUS_RECEIVE_ORDERS_ACTIVE)}
+                    />
+                </FormGroup>
+                <label>{t(STATUS_RECEIVE_ORDERS_DESCRIPTION)}</label>
+            </Box>
+
+            <Box className={classes.containerDelivery} sx={{ width: { xs: '100%', md: '90%' }, marginBottom: '10px' }}>
+                <div className={classes.HeaderMobile}>
+                    <label>{t(MSG_NEW_DELIVERY_BALLON)}</label>
                 </div>
 
+                <div className={classes.ballon}>
+                    <ChatBubbleIcon className="icon-ballon" />
+                    <label>{t(MSG_NEW_DELIVERY_BALLON)}</label>
+                </div>
+                <div className={classes.containerImg} onClick={() => handleModalShowImages(true)}>
+                    <img src={Images.box} alt="box" />
+                    <img src={Images.box} alt="box" />
+                </div>
+                <div className={classes.details}>
+                    <div className={classes.text}>
+                        <label>{t(MSG_NEW_DELIVERY_PICKUP)}:</label>
+                        <span>4194 Stoney Lane - Dallas TX</span>
+                    </div>
+                    <div className={classes.text}>
+                        <label>{t(MSG_NEW_DELIVERY_DROPOFF)}:</label>
+                        <span>2483 Zappia Drive - Winchester KY</span>
+                    </div>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a consectetur
+                        lectus. Vivamus augue velit, dictum at malesuada et.
+                    </p>
+                </div>
+
+                <div className={classes.ContainerButton}>
+                    <Button variant="contained" onClick={() => handleOpenSendOffer(true)}>
+                        {t(MSG_NEW_DELIVERY_BTN_PROPOSAL)}
+                    </Button>
+                    <Button variant="contained" onClick={() => handleOpenNewDelivery(false)}>
+                        {t(MSG_NEW_DELIVERY_BTN_DECLINE)}
+                    </Button>
+                </div>
+            </Box>
+
+            <div className={classes.container}>
+                <Box className={classes.containerItemsOrders}>
+                    <OrdersDriver />
+                </Box>
+
                 <div className={classes.containerMap}>
-                    <MapsUser />
+                    <MapsDriver />
                     <div className={classes.design} />
                 </div>
             </div>

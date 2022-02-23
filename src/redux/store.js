@@ -8,7 +8,7 @@ import CreateOrder from './createOrder.slice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['login']
+  whitelist: ['order']
 };
 
 const rootReducer = combineReducers({

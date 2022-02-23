@@ -59,11 +59,11 @@
     "STATUS_CANCELED": "Cancelado",
     "STATUS_QUEUED": "En la fila",
     "TITLE_ORDERS": "Mis pedidos",
-
     "TITLE_DATE": "Fecha",
     "TITLE_FROM": "De",
     "TITLE_TO": "A",
     "TITLE_DRIVER": "Conductor",
+    "TITLE_USER": "Usuario",
     "TITLE_LOAD": "Carga",
     "BTN_SEE_MORE": "Ver más",
     "LABEL_YOUR_DELIVERIES": "Tus entregas"

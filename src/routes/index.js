@@ -16,6 +16,8 @@ import Register from "../pages/register";
 import RegisterUser from "../pages/register/register-user";
 import RegisterDriver from "../pages/register/register-driver";
 
+import HomeDriver from './../pages/driver'
+
 
 
 export function RoutesMain() {
@@ -40,6 +42,8 @@ export function RoutesMain() {
                             <Route path="/home/user/ordem/view/:id" element={<ViewOrder />} />
                         </>
                     }
+
+                    <Route path="/home/driver" element={<HomeDriver />} />
                 </Routes>
             </BrowserRouter>
 

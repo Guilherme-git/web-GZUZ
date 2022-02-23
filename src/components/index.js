@@ -3,8 +3,10 @@ import HeaderMain from './main/Header/Header';
 import Nav from './main/Nav';
 import HeaderHome from './headerHome/HeaderHome';
 import Bandeiras from './bandeiras/Bandeiras';
-import Orders from './home/orders/Orders';
-import Maps from './home/maps/Maps';
+import OrdersUser from './home/user/orders/Orders';
+import OrdersDriver from './home/driver/orders/Orders';
+import MapsUser from './home/user/maps/Maps';
+import MapsDriver from './home/driver/maps/Maps';
 import Divider from './Divider';
 // import ModalNewOffer from './ModalNewOffer/ModalNewOffer';
 // import ModalCancelOrder from './ModalCancelOrder/ModalCancelOrder';
@@ -23,8 +25,10 @@ export {
   Nav,
   HeaderHome,
   Bandeiras,
-  Orders,
-  Maps,
+  OrdersUser,
+  OrdersDriver,
+  MapsUser,
+  MapsDriver,
   Divider,
   //   ModalNewOffer,
   //   ModalCancelOrder,

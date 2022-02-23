@@ -23,7 +23,7 @@ import {
   TITLE_DRIVER,
   TITLE_LOAD,
   BTN_SEE_MORE,
-} from '../../../config/ConfigDefault';
+} from '../../../../config/ConfigDefault';
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({

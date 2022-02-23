@@ -2,7 +2,7 @@
 
 import React, { memo, useState } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import IconCard from '../../../assets/images/car.png';
+import IconCard from '../../../../assets/images/car.png';
 import './Maps.scss';
 
 const initialPosition = { lat: -16.622225, lng: -51.095984 };
