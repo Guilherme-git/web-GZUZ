@@ -245,10 +245,10 @@
     "BTN_REGISTER": "REGISTRAR"
   },
   "MODAL_NEW_COMPANY": {
-    "TITLE": "Introduzca una nueva empresa.",
-    "LABEL_CAMPANY_NAME": "Nombre de la empresa",
+    "TITLE": "Introduza uma nova empresa.",
+    "LABEL_CAMPANY_NAME": "Nome da empresa",
     "LABEL_EIN": "EIN",
-    "LABEL_ADDRESS": "Dirección",
+    "LABEL_ADDRESS": "Endereço",
     "BTN_ENTER": "Entrar",
     "MSG_SUCCESS": "Empresa adicionada com sucesso!"
   },
