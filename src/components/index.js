@@ -10,7 +10,7 @@ import MapsDriver from './home/driver/maps/Maps';
 import Divider from './Divider';
 // import ModalNewOffer from './ModalNewOffer/ModalNewOffer';
 // import ModalCancelOrder from './ModalCancelOrder/ModalCancelOrder';
-// import ModalSendOffer from './ModalSendOffer/ModalSendOffer';
+import ModalSendOffer from './ModalSendOffer/ModalSendOffer';
 // import ModalProposalAccepted from './ModalProposalAccepted/ModalProposalAccepted';
 import ModalShowImages from './ModalShowImages/ModalShowImages';
 import ModalRegisterCompany from './register/RegisterDriver/ModalRegisterCompany';
@@ -35,7 +35,7 @@ export {
   Steps,
   BasicBreadcrumbs,
   CollapseComponent,
-  //   ModalSendOffer,
+  ModalSendOffer,
   //   PageBackgroundColor,
   //   ModalProposalAccepted,
   ModalShowImages,

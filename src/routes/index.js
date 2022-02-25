@@ -25,7 +25,6 @@ export function RoutesMain() {
         return state.login
     })
 
-
     return (
         <>
             <BrowserRouter>
@@ -34,7 +33,9 @@ export function RoutesMain() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/register/user" element={<RegisterUser />} />
+                    
                     <Route path="/register/driver" element={<RegisterDriver />} />
+
                     {resultRedux.user.type == 'user' &&
                         <>
                             <Route path="/home/user" element={<HomeUser />} />

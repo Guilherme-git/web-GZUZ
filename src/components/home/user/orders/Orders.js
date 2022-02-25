@@ -334,7 +334,7 @@ export default () => {
     <div className={classes.container}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <TableHead>
+          <TableHead style={{backgroundColor:'#F1F1F1' }}>
             <TableRow>
               <TableCell style={{ fontSize: 18 }}>{t(TITLE_ORDERS)}</TableCell>
               <TableCell></TableCell>
@@ -344,7 +344,7 @@ export default () => {
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{backgroundColor:'#F1F1F1' }}>
             {rows.map((row) => (
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row">

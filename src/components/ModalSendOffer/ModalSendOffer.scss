@@ -1,0 +1,132 @@
+@use '../../constants/Colors.scss';
+
+.container-main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+}
+
+.container-send-offer {
+  background-color: Colors.$CINZA00;
+  box-shadow: 0px 5px 7px rgba(116, 116, 116, 0.25);
+  border-radius: 8px;
+
+  .send-offer-header {
+    background-color: Colors.$AZUL;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: Colors.$BRANCO;
+    padding: 0.5rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .send-offer-title {
+    padding: 1rem;
+    label {
+      font-weight: 500;
+      color: Colors.$CINZA80;
+    }
+  }
+
+  .container-send-offer-content {
+    padding: 1rem;
+    position: relative;
+    display: flex;
+    .send-offer-image {
+      background-color: red;
+      margin-right: 25%;
+      img {
+        position: absolute;
+        left: 3rem;
+        width: 10%;
+      }
+      img:nth-child(1) {
+        transform: rotate(20deg);
+      }
+    }
+
+    .container-send-offer-pickup {
+      .send-offer-pickup-details {
+        display: flex;
+        margin-bottom: 0.3rem;
+        label {
+          font-weight: 500;
+          color: Colors.$AMARELO;
+          margin-right: 0.5rem;
+        }
+        span {
+          color: Colors.$CINZA60;
+        }
+        p {
+          color: Colors.$CINZA60;
+        }
+      }
+    }
+  }
+
+  .container-send-offer-footer {
+    padding: 1rem;
+    color: Colors.$CINZA80;
+    display: flex;
+    flex-direction: column;
+    label:nth-child(1) {
+      font-weight: 500;
+      // font-size: small;
+      margin-bottom: 0.5rem;
+      font-size: smaller;
+      line-height: 19px;
+    }
+    label:nth-child(2) {
+      font-weight: normal;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      line-height: 19px;
+    }
+    span {
+      font-weight: 500;
+    }
+
+    .container-send-offer-money {
+      display: flex;
+      align-items: center;
+      // justify-content: space-between;
+      .send-offer-money-input {
+        width: 60%;
+        margin-right: 1rem;
+      }
+      button {
+        background-color: #6ed949;
+        position: relative;
+        top: 0.3rem;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .container-send-offer {
+    .container-send-offer-content {
+      .send-offer-image {
+        margin-right: 27%;
+        img {
+          position: absolute;
+          left: 3rem;
+          width: 14%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container-main {
+    width: 90%;
+  }
+}

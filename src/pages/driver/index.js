@@ -10,7 +10,8 @@ import {
     HeaderHome,
     OrdersDriver,
     MapsDriver,
-    OrdersUser
+    ModalSendOffer,
+    ModalShowImages
 } from '../../components';
 
 import {
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
             width: '100%',
         },
     },
-    design: ({ type }) => ({
+    design: () => ({
         backgroundColor: theme.palette.primary.AZUL,
         width: '100%',
         height: '20%',
@@ -82,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '16px',
         padding: '10px',
         borderRadius: '5px',
+        height: 40,
 
         '& :nth-child(1)': {
             marginRight: '10px',
@@ -99,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         margin: theme.spacing(1, 0) + ' !important',
         zIndex: 999 + ' !important',
+        height: 200,
+        overflowY: "scroll",
+        paddingTop: 10,
 
         [theme.breakpoints.down('md')]: {
             position: 'absolute',
@@ -279,8 +284,11 @@ export default () => {
         <div className="container-homeUsers">
             <HeaderHome />
 
+            <ModalSendOffer openSendOffer={openSendOffer} handleOpenSendOffer={handleOpenSendOffer} />
+            <ModalShowImages modalShowImages={modalShowImages} handleModalShowImages={handleModalShowImages} />
+
             <Box className={classes.StatusDriver} sx={{ width: { xs: '100%', md: '90%' }, marginBottom: '10px' }}>
-                <label>STATUS:</label>
+                <label style={{fontSize: 14}}>STATUS:</label>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -324,7 +332,7 @@ export default () => {
                     <Button variant="contained" onClick={() => handleOpenSendOffer(true)}>
                         {t(MSG_NEW_DELIVERY_BTN_PROPOSAL)}
                     </Button>
-                    <Button variant="contained" onClick={() => handleOpenNewDelivery(false)}>
+                    <Button variant="contained" onClick={() => alert('recusado')}>
                         {t(MSG_NEW_DELIVERY_BTN_DECLINE)}
                     </Button>
                 </div>
