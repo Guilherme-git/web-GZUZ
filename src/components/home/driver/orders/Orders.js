@@ -377,7 +377,7 @@ export default () => {
                 </TableCell>
 
                 <TableCell component="th" scope="row">
-                  <Button onClick={() => alert('aqui')}
+                  <Button onClick={() => navigate('/home/driver/delivery-details/1')}
                     className={classes.containerBtn} variant='contained'>{t(BTN_SEE_MORE)}</Button>
                 </TableCell>
 

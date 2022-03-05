@@ -17,6 +17,7 @@ import RegisterUser from "../pages/register/register-user";
 import RegisterDriver from "../pages/register/register-driver";
 
 import HomeDriver from './../pages/driver'
+import DeliveryDetails from '../pages/driver/delivery-details'
 
 
 
@@ -45,6 +46,7 @@ export function RoutesMain() {
                     }
 
                     <Route path="/home/driver" element={<HomeDriver />} />
+                    <Route path="/home/driver/delivery-details/:id" element={<DeliveryDetails />} />
                 </Routes>
             </BrowserRouter>
 
