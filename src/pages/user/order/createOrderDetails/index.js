@@ -672,7 +672,7 @@ export default () => {
                     <div className="cargo">
                         <div className={classes.containerCargo}>
                             <TextField
-                                style={{ flex: 1 }}
+                                style={{ flex: 1, width: 300 }}
                                 label={t(TITLE_CARGO)}
                                 name="carga"
                                 variant="standard"
@@ -680,45 +680,43 @@ export default () => {
                                 className={classes.cargo}
                                 onChange={(event) => setCarga(event.target.value)}
                             />
+
+                            <label htmlFor="contained-button-file">
+                                <Input
+                                    accept="image/*"
+                                    id="contained-button-file"
+                                    multiple
+                                    type="file"
+                                    onChange={handleTakePicture}
+                                />
+                                <Button
+                                    className={classes.btnTakePicture}
+                                    variant="contained"
+                                    component="span"
+                                    startIcon={<PhotoCamera />}
+                                >
+                                    {t(BTN_TAKE_PICTURE)}
+                                </Button>
+                            </label>
+
+                            <label htmlFor="contained-button-file" style={{ marginLeft: '10px' }}>
+                                <Input
+                                    accept="image/*"
+                                    id="contained-button-file"
+                                    multiple
+                                    type="file"
+                                    onChange={handleTakePicture}
+                                />
+                                <Button
+                                    className={classes.btnTakePicture}
+                                    variant="contained"
+                                    component="span"
+                                >
+                                    {t(BTN_TITLE_BUTTOM_IMAGE_DOWNLOAD)}
+                                </Button>
+                            </label>
                         </div>
                     </div>
-                </div>
-
-                <div style={{ alignSelf: 'center' }}>
-                    <label htmlFor="contained-button-file" >
-                        <Input
-                            accept="image/*"
-                            id="contained-button-file"
-                            multiple
-                            type="file"
-                            onChange={handleTakePicture}
-                        />
-                        <Button
-                            className={classes.btnTakePicture}
-                            variant="contained"
-                            component="span"
-                            startIcon={<PhotoCamera />}
-                        >
-                            {t(BTN_TAKE_PICTURE)}
-                        </Button>
-                    </label>
-
-                    <label htmlFor="contained-button-file" style={{ marginLeft: '10px' }}>
-                        <Input
-                            accept="image/*"
-                            id="contained-button-file"
-                            multiple
-                            type="file"
-                            onChange={handleTakePicture}
-                        />
-                        <Button
-                            className={classes.btnTakePicture}
-                            variant="contained"
-                            component="span"
-                        >
-                            {t(BTN_TITLE_BUTTOM_IMAGE_DOWNLOAD)}
-                        </Button>
-                    </label>
                 </div>
             </div>
 

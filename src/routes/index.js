@@ -34,16 +34,20 @@ export function RoutesMain() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/register/user" element={<RegisterUser />} />
-                    
+
                     <Route path="/register/driver" element={<RegisterDriver />} />
 
-                    {resultRedux.user.type == 'user' &&
+                    <Route path="/home/user" element={<HomeUser />} />
+                    <Route path="/home/user/ordem/create" element={<CreateOrder />} />
+                    <Route path="/home/user/ordem/view/:id" element={<ViewOrder />} />
+
+                    {/* {resultRedux.user.type == 'user' &&
                         <>
                             <Route path="/home/user" element={<HomeUser />} />
                             <Route path="/home/user/ordem/create" element={<CreateOrder />} />
                             <Route path="/home/user/ordem/view/:id" element={<ViewOrder />} />
                         </>
-                    }
+                    } */}
 
                     <Route path="/home/driver" element={<HomeDriver />} />
                     <Route path="/home/driver/delivery-details/:id" element={<DeliveryDetails />} />
