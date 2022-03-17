@@ -119,7 +119,11 @@ const useStyles = makeStyles((theme) => ({
     },
     borderNumber: {
         color: '#fff',
-        fontSize: 30
+        fontSize: 30,
+        //width: '100%',
+        // alignSelf: 'center',
+        // marginLeft: '18px' + ' !important',
+        // marginRight: '18px' + ' !important'
     },
     container: {
         width: '100%',
@@ -176,6 +180,8 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     containerDimension: {
+        //backgroundColor: 'blue',
+        flexDirection: 'row' + ' !important',
         width: '70%',
         alignSelf: 'center',
         margin: '30px 0',
@@ -184,9 +190,11 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
 
         '& .cargo': {
-            maxHeight: '200px',
-            overflow: 'auto',
-            width: '50%'
+            flexDirection: 'row' + ' !important',
+            //backgroundColor: 'red',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         [theme.breakpoints.down('sm')]: {
             width: '90%',
@@ -303,7 +311,8 @@ const useStyles = makeStyles((theme) => ({
         '& .vertical': {
             display: 'flex',
             flexDirection: 'column',
-            marginRight: theme.spacing(2)
+            marginRight: theme.spacing(2),
+            alignSelf: 'center'
         },
         [theme.breakpoints.down('sm')]: {
             display: 'flex' + ' !important',
@@ -348,10 +357,42 @@ const useStyles = makeStyles((theme) => ({
             fontSize: '100px' + ' !important'
         }
     },
+    cargoInput: {
+        width: '120px',
+    },
     containerCargoInput: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: theme.spacing(2),
+        '& :nth-child(1)': {
+            marginRight: theme.spacing(2)
+        },
+        '& :nth-child(2)': {
+            marginRight: theme.spacing(2)
+        },
+        '& :nth-child(3)': {
+            marginRight: theme.spacing(2)
+        },
+        [theme.breakpoints.down('sm')]: {
+            '& :nth-child(1)': {
+                marginRight: theme.spacing(1)
+            },
+            '& :nth-child(2)': {
+                marginRight: theme.spacing(1)
+            },
+            '& :nth-child(3)': {
+                marginRight: theme.spacing(1)
+            }
+        }
+    },
+    containerCargoInput1: {
+        //backgroundColor: 'green',
+        display: 'flex',
+        flexDirection: 'row' + ' !important',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
         marginBottom: theme.spacing(2),
         '& :nth-child(1)': {
             marginRight: theme.spacing(2)
@@ -493,6 +534,13 @@ export default () => {
 
     let [carga, setCarga] = useState();
 
+    const [carga2, setCarga2] = useState([{
+        carga: '', picture: {}
+    }])
+    const [dimensao, setDimensao] = useState([
+        { altura: '', largura: '', profundidade: '', peso: '', feetOrCentimeter: '', lbsOrKgs: '' }
+    ])
+
     const [dataDimension, setDataDimension] = useState([
         { altura: '', largura: '', profundidade: '', peso: '' }
     ]);
@@ -517,6 +565,60 @@ export default () => {
         }
     }, [resultRedux.orderDetails.data])
 
+    const addCampos = () => {
+        setCarga2([...carga2, { carga: '', picture: {} }])
+    }
+
+    const mudarCampos = (event, index) => {
+        const { value, name } = event.target;
+        let newCarga = [];
+        newCarga.push(...carga2);
+        newCarga[index] = { ...carga2[index], [name]: value }
+        setCarga2(newCarga)
+    }
+
+    const mudarCamposPicture = (event, index) => {
+        const { name } = event.target;
+        const file = event.target.files[0];
+        console.log(file)
+        let newCarga = [];
+        newCarga.push(...carga2);
+        newCarga[index] = { ...carga2[index], [name]: file }
+        setCarga2(newCarga)
+    }
+
+    const addDimensao = () => {
+        setDimensao([...dimensao, { altura: '', largura: '', profundidade: '', peso: '', feetOrCentimeter: '' }])
+    }
+
+    const mudarDimensao = (event, index) => {
+        const { value, name } = event.target;
+        let array = [];
+        array.push(...dimensao);
+        array[index] = { ...dimensao[index], [name]: value }
+        setDimensao(array)
+    }
+
+    const adicionar = () => {
+        addCampos()
+        addDimensao()
+    }
+
+    const remover = () => {
+        if (carga2.length > 1) {
+            const arrayCarga2 = [...carga2]
+            arrayCarga2.pop()
+            setCarga2(arrayCarga2)
+        }
+
+        if (dimensao.length > 1) {
+            const arrayDimensao = [...dimensao]
+            arrayDimensao.pop()
+            setDimensao(arrayDimensao)
+        }
+
+    }
+
     const handleAddDimension = (event) => {
         event.preventDefault();
         setDataDimension([...dataDimension, { altura: '', largura: '', profundidade: '', peso: '' }]);
@@ -540,6 +642,7 @@ export default () => {
     const handleTakePicture = (event) => {
         event.preventDefault();
         const file = event.target.files[0];
+        console.log(typeof file, 'MINHA FOTO')
         setSelectedFiles(file);
     };
 
@@ -576,19 +679,21 @@ export default () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = {
-            carga: carga,
-            dimensoes: dataDimension,
-            tipo_peso: feetOrCentimeter,
-            tipo_altura: lbsOrKgs,
-            peso_total: totalWeight,
-            foto: selectedFiles,
-            numeros: purchaseOrder,
-            observacao: observation,
-            tipo: observationCargo,
-            automoveis: selectedCars
-        };
-        dispatch(setOrderDetails(data));
+        // const data = {
+        //     carga: carga,
+        //     dimensoes: dataDimension,
+        //     tipo_peso: feetOrCentimeter,
+        //     tipo_altura: lbsOrKgs,
+        //     peso_total: totalWeight,
+        //     foto: selectedFiles,
+        //     numeros: purchaseOrder,
+        //     observacao: observation,
+        //     tipo: observationCargo,
+        //     automoveis: selectedCars
+        // };
+        // dispatch(setOrderDetails(data));
+
+        console.log(dimensao)
     };
 
     return (
@@ -669,54 +774,60 @@ export default () => {
                         <label>{t(TITLE_PICKING_UP_03)}</label>
                         <label>{t(TITLE_PICKING_UP_04)}</label>
                     </div>
-                    <div className="cargo">
-                        <div className={classes.containerCargo}>
-                            <TextField
-                                style={{ flex: 1, width: 300 }}
-                                label={t(TITLE_CARGO)}
-                                name="carga"
-                                variant="standard"
-                                value={carga}
-                                className={classes.cargo}
-                                onChange={(event) => setCarga(event.target.value)}
-                            />
+                    {carga2?.map((item, index) => {
+                        return (
+                            <div className="cargo">
+                                <div className={classes.containerCargo}>
+                                    <TextField
+                                        style={{ flex: 1, width: 300 }}
+                                        label={t(TITLE_CARGO)}
+                                        name="carga"
+                                        variant="standard"
+                                        value={item.carga}
+                                        className={classes.cargo}
+                                        onChange={(event) => mudarCampos(event, index)}
+                                    />
 
-                            <label htmlFor="contained-button-file">
-                                <Input
-                                    accept="image/*"
-                                    id="contained-button-file"
-                                    multiple
-                                    type="file"
-                                    onChange={handleTakePicture}
-                                />
-                                <Button
-                                    className={classes.btnTakePicture}
-                                    variant="contained"
-                                    component="span"
-                                    startIcon={<PhotoCamera />}
-                                >
-                                    {t(BTN_TAKE_PICTURE)}
-                                </Button>
-                            </label>
+                                    <label htmlFor="contained-button-file">
+                                        <Input
+                                            accept="image/*"
+                                            name='picture'
+                                            id="contained-button-file"
+                                            multiple
+                                            type="file"
+                                            onChange={(event) => mudarCamposPicture(event, index)}
+                                        />
+                                        <Button
+                                            className={classes.btnTakePicture}
+                                            variant="contained"
+                                            component="span"
+                                            startIcon={<PhotoCamera />}
+                                        >
+                                            {t(BTN_TAKE_PICTURE)}
+                                        </Button>
+                                    </label>
 
-                            <label htmlFor="contained-button-file" style={{ marginLeft: '10px' }}>
-                                <Input
-                                    accept="image/*"
-                                    id="contained-button-file"
-                                    multiple
-                                    type="file"
-                                    onChange={handleTakePicture}
-                                />
-                                <Button
-                                    className={classes.btnTakePicture}
-                                    variant="contained"
-                                    component="span"
-                                >
-                                    {t(BTN_TITLE_BUTTOM_IMAGE_DOWNLOAD)}
-                                </Button>
-                            </label>
-                        </div>
-                    </div>
+                                    <label htmlFor="contained-button-file" style={{ marginLeft: '10px' }}>
+                                        <Input
+                                            accept="image/*"
+                                            id="contained-button-file"
+                                            multiple
+                                            type="file"
+                                            onChange={handleTakePicture}
+                                        />
+                                        <Button
+                                            className={classes.btnTakePicture}
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            {t(BTN_TITLE_BUTTOM_IMAGE_DOWNLOAD)}
+                                        </Button>
+                                    </label>
+
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
@@ -730,133 +841,132 @@ export default () => {
                     <label> {t(TITLE_DIMENSIONS_03)}</label>
                     <label> {t(TITLE_DIMENSIONS_04)}</label>
                 </div>
-                <FormGroup className={classes.containerWeight}>
-                    <TextField
-                        className={classes.cargoInput}
-                        label={t(LABEL_WEIGHT)}
-                        name="peso"
-                        variant="standard"
-                        type="number"
-                    />
-                    <div>
-                        <FormControlLabel
-                            classes={{ label: classes.labelSwitch }}
-                            control={
-                                <Switch
-                                    value="lbs"
-                                    onChange={(event) => setLbsOrKgs(event.target.value)}
-                                    classes={{
-                                        root: classes.switchSize
-                                    }}
-                                    checked={lbsOrKgs === 'lbs'}
+
+                {dimensao?.map((item, index) => {
+                    return (
+                        <div className="cargo">
+                            <div className={classes.containerCargoInput1} key={index}>
+                                <TextField
+                                    className={classes.cargoInput}
+                                    label={t(LABEL_HIGHT)}
+                                    name="altura"
+                                    variant="standard"
+                                    onChange={(event) => mudarDimensao(event, index)}
+                                    value={item.altura}
+                                    type="number"
                                 />
-                            }
-                            label={t(DIMENSION_LBS)}
-                        />
-                        <FormControlLabel
-                            classes={{ label: classes.labelSwitch }}
-                            control={
-                                <Switch
-                                    value="kgs"
-                                    onChange={(event) => setLbsOrKgs(event.target.value)}
-                                    classes={{
-                                        root: classes.switchSize
-                                    }}
-                                    checked={lbsOrKgs === 'kgs'}
+                                <TextField
+                                    className={classes.cargoInput}
+                                    label={t(LABEL_WIDTH)}
+                                    name="largura"
+                                    variant="standard"
+                                    onChange={(event) => mudarDimensao(event, index)}
+                                    value={item.largura}
+                                    type="number"
                                 />
-                            }
-                            label={t(DIMENSION_KGS)}
-                        />
-                    </div>
+                                <TextField
+                                    className={classes.cargoInput}
+                                    label={t(LABEL_DEPTH)}
+                                    name="profundidade"
+                                    variant="standard"
+                                    onChange={(event) => mudarDimensao(event, index)}
+                                    value={item.profundidade}
+                                    type="number"
+                                />
 
-                    <div>
-                        <div className={classes.border} /*onClick={handleAddDimension} */>
-                            <div className={classes.borderNumber}>+</div>
-                        </div>
-                        <div className={classes.border} style={{ marginTop: '10px', color: '#fff', backgroundColor: '#bebebe' }} /*onClick={handleAddDimension} */>
-                            <ContentCopyOutlinedIcon style={{ alignSelf: 'center' }} />
-                        </div>
-                    </div>
-                </FormGroup>
-                <div className="cargo">
-                    {dataDimension?.map((item, index) => {
-                        return (
-                            <div style={{ flexDirection: 'row' }}>
-                                <div className={classes.containerCargoInput} key={index}>
-                                    <TextField
-                                        className={classes.cargoInput}
-                                        label={t(LABEL_HIGHT)}
-                                        name="altura"
-                                        variant="standard"
-                                        onChange={(event) => handleDimension(event, index)}
-                                        value={item.altura}
-                                        type="number"
+                                <div className="vertical" style={{ marginLeft: '50px' }}>
+                                    <FormControlLabel
+                                        classes={{ label: classes.labelSwitch }}
+                                        control={
+                                            <Switch
+                                                checked={dimensao[index].feetOrCentimeter === 'feet'}
+                                                name='feetOrCentimeter'
+                                                value="feet"
+                                                classes={{
+                                                    root: classes.switchSize
+                                                }}
+                                                onChange={(event) => mudarDimensao(event, index)}
+                                            />
+                                        }
+                                        label={t(DIMENSION_FEET)}
                                     />
-                                    <TextField
-                                        className={classes.cargoInput}
-                                        label={t(LABEL_WIDTH)}
-                                        name="largura"
-                                        variant="standard"
-                                        onChange={(event) => handleDimension(event, index)}
-                                        value={item.largura}
-                                        type="number"
+                                    <FormControlLabel
+                                        classes={{ label: classes.labelSwitch }}
+                                        control={
+                                            <Switch
+                                                classes={{
+                                                    root: classes.switchSize
+                                                }}
+                                                checked={dimensao[index].feetOrCentimeter === 'centimeter'}
+                                                name='feetOrCentimeter'
+                                                value="centimeter"
+                                                onChange={(event) => mudarDimensao(event, index)}
+                                            />
+                                        }
+                                        label={t(DIMENSION_CENTIMETER)}
                                     />
-                                    <TextField
-                                        className={classes.cargoInput}
-                                        label={t(LABEL_DEPTH)}
-                                        name="profundidade"
-                                        variant="standard"
-                                        onChange={(event) => handleDimension(event, index)}
-                                        value={item.profundidade}
-                                        type="number"
-                                    />
-                                    <div className="vertical">
-                                        <FormControlLabel
-                                            classes={{ label: classes.labelSwitch }}
-                                            control={
-                                                <Switch
-                                                    checked={feetOrCentimeter === 'feet'}
-                                                    value="feet"
-                                                    classes={{
-                                                        root: classes.switchSize
-                                                    }}
-                                                    onChange={(event) => setFeetOrCentimeter(event.target.value)}
-                                                />
-                                            }
-                                            label={t(DIMENSION_FEET)}
-                                        />
-                                        <FormControlLabel
-                                            classes={{ label: classes.labelSwitch }}
-                                            control={
-                                                <Switch
-                                                    classes={{
-                                                        root: classes.switchSize
-                                                    }}
-                                                    checked={feetOrCentimeter === 'centimeter'}
-                                                    value="centimeter"
-                                                    onChange={(event) => setFeetOrCentimeter(event.target.value)}
-                                                />
-                                            }
-                                            label={t(DIMENSION_CENTIMETER)}
-                                        />
-                                    </div>
-
-
-                                    {dataDimension.length !== 1 && (
-                                        <div
-                                            className={classes.removeItem}
-                                            onClick={(event) => handleRemoveDimension(event, index)}
-                                        >
-                                            <RemoveCircleOutlineIcon />
-                                        </div>
-                                    )}
                                 </div>
-                            </div>
 
-                        );
-                    })}
+                                <TextField
+                                    className={classes.cargoInput}
+                                    label={t(LABEL_WEIGHT)}
+                                    name="peso"
+                                    variant="standard"
+                                    type="number"
+                                    onChange={(event) => mudarDimensao(event, index)}
+                                />
+
+                                <div>
+                                    <FormControlLabel
+                                        classes={{ label: classes.labelSwitch }}
+                                        control={
+                                            <Switch
+                                                classes={{
+                                                    root: classes.switchSize
+                                                }}
+                                                checked={dimensao[index].lbsOrKgs === 'lbs'}
+                                                name='lbsOrKgs'
+                                                value="lbs"
+                                                onChange={(event) => mudarDimensao(event, index)}
+                                            />
+                                        }
+                                        label={t(DIMENSION_LBS)}
+                                    />
+                                    <FormControlLabel
+                                        classes={{ label: classes.labelSwitch }}
+                                        control={
+                                            <Switch
+                                                classes={{
+                                                    root: classes.switchSize
+                                                }}
+                                                checked={dimensao[index].lbsOrKgs === 'kgs'}
+                                                name='lbsOrKgs'
+                                                value="kgs"
+                                                onChange={(event) => mudarDimensao(event, index)}
+                                            />
+                                        }
+                                        label={t(DIMENSION_KGS)}
+                                    />
+                                </div>
+
+                            </div>
+                        </div>
+                    );
+                })}
+
+                <div style={{ /*backgroundColor: 'yellow'*/ width: '50px' }}>
+                    <div className={classes.border} onClick={adicionar} >
+                        <div className={classes.borderNumber}>+</div>
+                    </div>
+                    <div onClick={remover}
+                        className={classes.border} style={{ marginTop: '10px', color: '#fff', backgroundColor: '#bebebe' }} /*onClick={handleAddDimension} */>
+                        <ContentCopyOutlinedIcon style={{ alignSelf: 'center' }} />
+                    </div>
                 </div>
+
             </div>
+
+
 
 
             {/* 05 */}
