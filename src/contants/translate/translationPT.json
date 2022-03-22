@@ -123,7 +123,8 @@
   "STEP_CREATE_ORDERS_PICKUP": {
     "LABEL_BILL_TO_PICKUP": "Conta para",
     "LABEL_DATE_PICKUP": "Data",
-    "LABEL_TIME_PICKUP": "Hora",
+    "LABEL_TIME_PICKUP": "Abrindo hora",
+    "LABEL_TIME_PICKUP1": "Fechando hora",
     "LABEL_COMPANY_NAME_PICKUP": "Nome da empresa",
     "LABEL_CONTACT_NAME_PICKUP": "Nome do contato",
     "LABEL_EMAIL_PICKUP": "E-mail",

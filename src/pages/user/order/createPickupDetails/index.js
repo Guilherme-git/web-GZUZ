@@ -16,6 +16,7 @@ import {
   LABEL_BILL_TO_PICKUP,
   LABEL_DATE_PICKUP,
   LABEL_TIME_PICKUP,
+  LABEL_TIME_PICKUP1,
   LABEL_COMPANY_NAME_PICKUP,
   LABEL_EMAIL_PICKUP,
   LABEL_PHONE_PICKUP,
@@ -279,6 +280,16 @@ const CreatePickupDetails = () => {
             <TextField
               className={classes.input}
               label={t(LABEL_TIME_PICKUP)}
+              variant="standard"
+              value={time}
+              type="time"
+              onChange={(e) => setTime(e.target.value)}
+              error={Object.keys(ValidationFields()).includes('time')}
+              helperText={Object.keys(ValidationFields()).includes('time') && ValidationFields().time}
+            />
+            <TextField
+              className={classes.input}
+              label={t(LABEL_TIME_PICKUP1)}
               variant="standard"
               value={time}
               type="time"

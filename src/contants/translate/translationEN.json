@@ -124,7 +124,8 @@
   "STEP_CREATE_ORDERS_PICKUP": {
     "LABEL_BILL_TO_PICKUP": "Bill To",
     "LABEL_DATE_PICKUP": "Date",
-    "LABEL_TIME_PICKUP": "Time",
+    "LABEL_TIME_PICKUP": "Opening time",
+    "LABEL_TIME_PICKUP1": "Closing time",
     "LABEL_COMPANY_NAME_PICKUP": "Company Name",
     "LABEL_CONTACT_NAME_PICKUP": "Contact Name",
     "LABEL_EMAIL_PICKUP": "E-mail",
