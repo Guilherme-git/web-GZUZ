@@ -4,15 +4,15 @@ import axios from '../api/index';
 export const LoginRedux = createAsyncThunk('auth/LoginUserAsync', async (payload) => {
     const response = await axios.post("/auth", payload)
 
-    if(response.data.message == "No registered user") {
+    if (response.data.message == "No registered user") {
         return response.data.message
     } else {
         return response.data[0]
     }
 });
 
-export const RegisterUserRedux = createAsyncThunk('/create/user', async(payload) => {
-    return payload
+export const RegisterUserRedux = createAsyncThunk('/create/user', async (payload) => {
+   return payload
 });
 
 const initialState = {
@@ -39,7 +39,7 @@ export const LoginSlice = createSlice({
             state.status = 'loading';
         });
         builder.addCase(LoginRedux.fulfilled, (state, action) => {
-            if(action.payload == 'No registered user') {
+            if (action.payload == 'No registered user') {
                 state.status = 'failed'
             } else {
                 state.status = 'success';
@@ -53,17 +53,18 @@ export const LoginSlice = createSlice({
         //-------------------------------------------------------------------
 
         builder.addCase(RegisterUserRedux.pending, (state, action) => {
-           // state.status = 'loading';
+            state.status = 'loading';
         });
         builder.addCase(RegisterUserRedux.fulfilled, (state, action) => {
-          console.log(action.payload)
+            state.status = 'success';
+            console.log(action.payload)
         });
         builder.addCase(RegisterUserRedux.rejected, (state, action) => {
-           // state.status = 'failed';
+            state.status = 'failed';
         });
     },
 });
-  
+
 
 export const { logoutUser, setNovo, setResetStatus } = LoginSlice.actions;
 

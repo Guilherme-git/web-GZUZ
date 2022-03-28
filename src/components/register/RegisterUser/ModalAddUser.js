@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Box, Button, Modal, TextField, Divider, Alert, Snackbar, MenuItem } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
@@ -126,27 +126,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CONFIG_USERS = [
-  {
-    id: 1,
-    name: 'José',
-    email: 'user1@gmail.com',
-    phone: '3333333',
-  },
-  {
-    id: 2,
-    name: 'user2',
-    email: 'user2@gmail.com',
-    phone: '2222222',
-  },
-];
-
-const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser }) => {
+const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser, setUsersProps }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const [user, setUser] = useState('');
-  const [users, setUsers] = useState([...CONFIG_USERS]);
+  const [users, setUsers] = useState([]);
+  const [indexSelected, setIndexSelected] = useState('')
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
   const handleClose = () => handleOpenModalAddUser(false);
 
   const [openMsg, setOpenMsg] = React.useState({
@@ -156,32 +146,59 @@ const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser }) => {
   });
   const { vertical, horizontal, open } = openMsg;
 
-  const handleCloseMsg = () => {
-    setOpenMsg({ ...openMsg, open: false });
-  };
-
-  const handleUser = (event) => {
-    setUser(event.target.value);
-  };
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-
   const verifyEmptyFields = () => {
-    if (name === '' || email === '' || phone === '') {
+    if (name === '' || email === '' || phone === '' || indexSelected !== '') {
       return true;
     }
     return false;
   };
 
+  const verifyIndex = () => {
+    if (indexSelected === '') {
+      return true;
+    }
+    return false;
+  };
+
+  const handleCloseMsg = () => {
+    setOpenMsg({ ...openMsg, open: false });
+  };
+
+  const handleUser = (event) => {
+    const userFilter = users.filter(user => user.id == event.target.value)
+    const userIndex = users.indexOf(userFilter[0])
+
+    setIndexSelected(userIndex)
+
+    setEmail(userFilter[0].email)
+    setName(userFilter[0].name)
+    setPhone(userFilter[0].phone)
+
+  };
+
   const handleAddUser = (event) => {
     event.preventDefault();
     setUsers([...users, { id: users.length + 1, name, email, phone }]);
+    setUsersProps([...users, { id: users.length + 1, name, email, phone }]);
     setOpenMsg({ ...openMsg, open: true });
     setName('');
     setEmail('');
     setPhone('');
+  };
+
+  const handleEditUser = (event) => {
+    event.preventDefault();
+
+    let newArray = [];
+    newArray.push(...users);
+    newArray[indexSelected] = { ...users[indexSelected], name, email, phone }
+    setName('');
+    setEmail('');
+    setPhone('');
+
+    setUsers(newArray)
+    setUsersProps(newArray)
+    setIndexSelected('')
   };
 
   return (
@@ -228,6 +245,7 @@ const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser }) => {
               {t(MODAL_ADD_USER_BTN_ADD)}
             </Button>
           </div>
+
           <div className={classes.footer}>
             <label>{t(MODAL_ADD_USER_LABEL_USER)}</label>
 
@@ -235,23 +253,28 @@ const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser }) => {
               <TextField
                 select
                 label={t(MODAL_ADD_USER_LABEL)}
-                value={user}
                 onChange={handleUser}
                 className={classes.companyInput}
                 variant="outlined"
                 size="small"
               >
                 {users.map((option) => (
-                  <MenuItem key={option.id} value={option.email}>
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
               </TextField>
-              <Button variant="contained">{t(MODAL_ADD_USER_BTN_EDIT_LIST)}</Button>
+              <Button
+                disabled={verifyIndex()}
+                onClick={handleEditUser} variant="contained">
+                {t(MODAL_ADD_USER_BTN_EDIT_LIST)}
+              </Button>
             </div>
           </div>
+
         </Box>
       </Modal>
+
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}

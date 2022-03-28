@@ -233,6 +233,7 @@ const RegisterUser = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const [users, setUsers] = useState([]);
   const [company, setCompany] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -307,10 +308,17 @@ const RegisterUser = () => {
     if (VerifyEmptyFields() === false && VerifyPassword() === false) {
       dispatch(
         RegisterUserRedux({
+          company,
           name,
           email,
+          phone,
+          zip: zipCode,
+          address,
+          country,
+          state,
+          city,
           password,
-          type: 'user',
+          users
         }),
       );
     }
@@ -326,6 +334,14 @@ const RegisterUser = () => {
       });
 
       setName('');
+      setCompany('');
+      setEmail('')
+      setPhone('')
+      setZipCode('')
+      setAddress('')
+      setCountry('')
+      setState('')
+      setCity('')
       setPassword('');
       setConfirmPassword('');
 
@@ -522,6 +538,7 @@ const RegisterUser = () => {
         </NavLink>
       </div>
       <ModalAddUser
+        setUsersProps={setUsers}
         openModalAddUser={openModalAddUser}
         handleOpenModalAddUser={handleOpenModalAddUser}
       />
