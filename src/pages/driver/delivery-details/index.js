@@ -8,6 +8,9 @@ import { MapsDriver, HeaderHome, Divider } from '../../../components'
 import { makeStyles, styled } from '@mui/styles';
 import { Button, TextField } from '@mui/material';
 import { Colors } from '../../../contants';
+import {
+ UploadFile
+} from '@mui/icons-material';
 
 import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -37,8 +40,8 @@ import {
 } from '../../../config/ConfigDefault';
 import './styles.scss'
 
-const InputNEw = styled('input')({
-  display: 'none',
+const Input = styled('input')({
+  display: 'none'
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
       color: theme.palette.primary.BRANCO,
     },
+  },
+  btnTakePicture: {
+    backgroundColor: '#BEBEBE' + ' !important',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   container: {
     padding: '14px',
@@ -80,12 +89,40 @@ const useStyles = makeStyles((theme) => ({
   horizontal1: {
     display: 'flex',
     position: 'relative',
+    marginTop: '10px',
 
     '& label': {
       fontWeight: 'normal',
       fontSize: '16px',
       lineHeight: '19px',
       color: theme.palette.primary.AMARELO,
+      marginRight: '10px',
+    },
+    '& span': {
+      fontWeight: 'normal',
+      fontSize: '16px',
+      lineHeight: '19px',
+      color: '#898989',
+      marginRight: '10px',
+    },
+    '& p': {
+      marginTop: '10px',
+      fontWeight: 'normal',
+      fontSize: '16px',
+      lineHeight: '19px',
+      color: '#898989',
+      width: '70%',
+    },
+  },
+  horizontal2: {
+    display: 'flex',
+    position: 'relative',
+    marginTop: '10px',
+
+    '& label': {
+      fontWeight: 'normal',
+      fontSize: '16px',
+      lineHeight: '19px',
       marginRight: '10px',
     },
     '& span': {
@@ -332,54 +369,75 @@ const DeliveryDetailsDriver = () => {
           <div className={classes.title}>{t(DELIVERY_DRIVER_DETAILS)}</div>
           <div className={classes.content}>
             <div className={classes.horizontal1}>
-              <div className={classes.vertical}>
-                <div className={classes.horizontal1}>
-                  <label>{t(DELIVERY_DRIVER_PICKUP)}:</label>
-                  <span>4194 Stoney Lane - Dallas TX</span>
-                </div>
-                <div className={classes.horizontal1}>
-                  <label>{t(DELIVERY_DRIVER_DROPOFF)}:</label>
-                  <span>4483 Zappia Drive - Winchester KY</span>
-                </div>
-                <div className={classes.horizontal1}>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a
-                    consectetur lectus. Vivamus augue velit, dictum at malesuada et. aaa
-                  </p>
-                </div>
-              </div>
 
               {statusBtn === "delivery" &&
-                <div className={classes.containerBtn}>
-                  <Button size="small" variant="contained">
-                    {t(DELIVERY_DRIVER_BTN_SEND_MESSAGE)}
-                  </Button>
-                  <Button size="small" variant="contained">
-                    {/* I&apos;M HERE */}
-                    {t(DELIVERY_DRIVER_BTN_IM_HERE)}
-                  </Button>
+                <>
+                  <div className={classes.vertical}>
+                    <div className={classes.horizontal1}>
+                      <label>{t(DELIVERY_DRIVER_PICKUP)}:</label>
+                      <span>4194 Stoney Lane - Dallas TX</span>
+                    </div>
+                    <div className={classes.horizontal1}>
+                      <label>{t(DELIVERY_DRIVER_DROPOFF)}:</label>
+                      <span>4483 Zappia Drive - Winchester KY</span>
+                    </div>
+                    <div className={classes.horizontal1}>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a
+                        consectetur lectus. Vivamus augue velit, dictum at malesuada et. aaa
+                      </p>
+                    </div>
+                  </div>
 
-                  <Button size="small" variant="contained" onClick={() => setStatusBtn("signature")}>
-                    {t(DELIVERY_DRIVER_BTN_DROP_OFF)}
-                  </Button>
+                  <div className={classes.containerBtn}>
+                    <Button size="small" variant="contained">
+                      {t(DELIVERY_DRIVER_BTN_SEND_MESSAGE)}
+                    </Button>
+                    <Button size="small" variant="contained">
+                      {/* I&apos;M HERE */}
+                      {t(DELIVERY_DRIVER_BTN_IM_HERE)}
+                    </Button>
 
-                </div>
+                    <Button size="small" variant="contained" onClick={() => setStatusBtn("signature")}>
+                      {t(DELIVERY_DRIVER_BTN_DROP_OFF)}
+                    </Button>
+                  </div>
+                </>
               }
 
               {statusBtn === "signature" &&
-                <div className={classes.containerBtn}>
-                  <Button size="small" variant="contained">
-                    {t(DELIVERY_DRIVER_BTN_SEND_MESSAGE)}
-                  </Button>
-                  <Button size="small" variant="contained">
-                    {/* I&apos;M HERE */}
-                    {t(DELIVERY_DRIVER_BTN_IM_HERE)}
-                  </Button>
+                <>
+                  <div className={classes.vertical}>
+                    <div className={classes.horizontal1}>
+                      <label>{t(DELIVERY_DRIVER_PICKUP)}:</label>
+                      <span>4194 Stoney Lane - Dallas TX</span>
+                    </div>
+                    <div className={classes.horizontal1}>
+                      <label>{t(DELIVERY_DRIVER_DROPOFF)}:</label>
+                      <span>4483 Zappia Drive - Winchester KY</span>
+                    </div>
+                    <div className={classes.horizontal1}>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a
+                        consectetur lectus. Vivamus augue velit, dictum at malesuada et. aaa
+                      </p>
+                    </div>
+                  </div>
 
-                  <Button size="small" variant="contained" onClick={() => setStatusBtn("finish")} style={{ backgroundColor: '#FAC312' }} >
-                    {t(DROPOFF_DETAILS_BTN_SIGNATURE)}
-                  </Button>
-                </div>
+                  <div className={classes.containerBtn}>
+                    <Button size="small" variant="contained">
+                      {t(DELIVERY_DRIVER_BTN_SEND_MESSAGE)}
+                    </Button>
+                    <Button size="small" variant="contained">
+                      {/* I&apos;M HERE */}
+                      {t(DELIVERY_DRIVER_BTN_IM_HERE)}
+                    </Button>
+
+                    <Button size="small" variant="contained" onClick={() => setStatusBtn("finish")} style={{ backgroundColor: '#FAC312' }} >
+                      {t(DROPOFF_DETAILS_BTN_SIGNATURE)}
+                    </Button>
+                  </div>
+                </>
               }
             </div>
           </div>
@@ -388,11 +446,53 @@ const DeliveryDetailsDriver = () => {
 
           {statusBtn === 'finish' &&
             <>
+              <div className={classes.vertical}>
+                <div className={classes.horizontal2}>
+                  <div style={{ borderRadius: '50%', backgroundColor: '#FAC312', height: '10px', width: '10px', marginTop: '5px', marginRight: '5px' }} />
+                  <label>{t(DROPOFF_SIGNATURE_LABEL_ATTACH_DOCS)}:</label>
+                  <label htmlFor="contained-button-file">
+                    <Input
+                      accept="image/*"
+                      name='picture'
+                      id="contained-button-file"
+                      multiple
+                      type="file"
+                    />
+
+                    <Button className={classes.btnTakePicture} endIcon={<UploadFile color='#fff' />} component="span">
+                      {t(DROPOFF_SIGNATURE_BTN_UPLOAD)}
+                    </Button>
+                  </label>
+
+                </div>
+                <div className={classes.horizontal2}>
+                  <div style={{ borderRadius: '50%', backgroundColor: '#FAC312', height: '10px', width: '10px', marginTop: '5px', marginRight: '5px' }} />
+                  <label>{t(DROPOFF_SIGNATURE_LABEL_ATTACH_PICTURES)}:</label>
+                  <label htmlFor="contained-button-file">
+                  <Input
+                      accept="image/*"
+                      name='picture'
+                      id="contained-button-file"
+                      multiple
+                      type="file"
+                    />
+                    <Button component="span" endIcon={<UploadFile color='#fff' />} className={classes.btnTakePicture}>
+                      {t(DROPOFF_SIGNATURE_BTN_UPLOAD)}
+                    </Button>
+                  </label>
+
+                </div>
+                <div className={classes.horizontal2}>
+                  <div style={{ borderRadius: '50%', backgroundColor: '#FAC312', height: '10px', width: '10px', marginTop: '5px', marginRight: '5px' }} />
+                  <label>{t(DROPOFF_SIGNATURE_LABEL_CONTACT_SIGNATURE)}:</label>
+                </div>
+              </div>
+
               <div className={classes.container}>
                 <Divider textAlign="left" className={classes.divider}>
                   {t(DROPOFF_SIGNATURE_TITLE)}
                 </Divider>
-                
+
                 <div className={classes.footer}>
                   <div className={classes.signature}>
                     <TextField
