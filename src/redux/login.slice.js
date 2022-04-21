@@ -11,9 +11,15 @@ export const LoginRedux = createAsyncThunk('auth/LoginUserAsync', async (payload
     }
 });
 
-export const RegisterUserRedux = createAsyncThunk('/create/user', async (payload) => {
-   return payload
+export const RegisterUserRedux = createAsyncThunk('/user/create', async (payload) => {
+   const response = await axios.post('/user/create', payload);
+   return response.data.message;
 });
+
+export const RegisterDriverRedux = createAsyncThunk('/driver/create', async (payload) => {
+    const response = await axios.post('/driver/create', payload);
+    return response.data.message;
+ });
 
 const initialState = {
     status: 'idle',
@@ -44,7 +50,7 @@ export const LoginSlice = createSlice({
             } else {
                 state.status = 'success';
                 state.user = action.payload
-            }
+            } 
         });
         builder.addCase(LoginRedux.rejected, (state, action) => {
             state.status = 'failed';
@@ -56,10 +62,25 @@ export const LoginSlice = createSlice({
             state.status = 'loading';
         });
         builder.addCase(RegisterUserRedux.fulfilled, (state, action) => {
-            state.status = 'success';
-            console.log(action.payload)
+            if(action.payload === 'create') {
+                state.status = 'success';
+            }
         });
         builder.addCase(RegisterUserRedux.rejected, (state, action) => {
+            state.status = 'failed';
+        });
+
+        //-------------------------------------------------------------------
+
+        builder.addCase(RegisterDriverRedux.pending, (state, action) => {
+            state.status = 'loading';
+        });
+        builder.addCase(RegisterDriverRedux.fulfilled, (state, action) => {
+            if(action.payload === 'create') {
+                state.status = 'success';
+            }
+        });
+        builder.addCase(RegisterDriverRedux.rejected, (state, action) => {
             state.status = 'failed';
         });
     },

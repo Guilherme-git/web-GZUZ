@@ -1,0 +1,126 @@
+@use '../../constants/Colors.scss';
+
+.container-cancel-offer {
+  background-color: Colors.$CINZA00;
+  border-radius: 8px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  //   height: 130px;
+  outline: none;
+  box-shadow: 0px 5px 7px 0px rgba(116, 116, 116, 0.25);
+  width: 60%;
+
+  .new-cancel-header {
+    background-color: Colors.$AMARELO;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-bottom: 19px;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: Colors.$BRANCO;
+    padding: 0.5rem 1rem;
+
+    .new-cancel-title {
+      font-size: 1rem;
+      font-family: Roboto;
+      font-weight: 400;
+    }
+
+    .new-cancel-close {
+      cursor: pointer;
+    }
+  }
+
+  .new-cancel-content {
+    .new-cancel-content-title {
+      color: Colors.$CINZA80;
+      font-size: 1rem;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 400;
+      margin-bottom: 20px;
+      margin-left: 1rem;
+      span {
+        font-weight: bold;
+      }
+    }
+
+    .new-cancel-container-radio {
+      margin-left: 1rem;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      color: Colors.$CINZA80;
+    }
+  }
+
+  .new-cancel-group-btn {
+    padding: 1rem;
+    background-color: Colors.$CINZA00;
+    padding-bottom: 1.5rem;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    button {
+      align-self: flex-end;
+      background-color: red;
+    }
+  }
+
+  .new-cancel-group-btn.send {
+    button {
+      background-color: Colors.$AZUL;
+      color: Colors.$BRANCO;
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .container-cancel-offer {
+    width: 90%;
+
+    .new-cancel-content {
+      .new-cancel-content-title {
+        font-size: 1rem;
+      }
+    }
+
+    .new-cancel-group-btn {
+      padding: 1rem;
+      button {
+        align-self: flex-end;
+        background-color: red;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .container-cancel-offer {
+    width: 90%;
+
+    .new-cancel-content {
+      .new-cancel-content-title {
+        font-size: 0.7rem;
+      }
+    }
+
+    .new-cancel-group-btn {
+      padding: 1rem;
+      button {
+        align-self: flex-end;
+        background-color: red;
+        font-size: 0.6rem;
+      }
+    }
+  }
+}

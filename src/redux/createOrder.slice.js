@@ -7,6 +7,7 @@ export const createNewOrder = createAsyncThunk('create/order', async (payload) =
 
 const initialState = {
     status: 'idle',
+    statusCancelOrder: 'idle',
     authenticated: false,
     ErrorAuth: '',
     pathActive: "/home/user/ordem/create",
@@ -65,14 +66,17 @@ export const CreateSlice = createSlice({
             const { id } = action.payload;
             state.statusOrderListed = 'loading';
             const index = state.orders?.findIndex((item) => item.id.toString() === id.toString());
-      
+
             if (index !== -1) {
-              state.orderListed = state.orders[index];
-              state.statusOrderListed = 'success';
+                state.orderListed = state.orders[index];
+                state.statusOrderListed = 'success';
             } else {
-              state.statusOrderListed = 'failed';
+                state.statusOrderListed = 'failed';
             }
-          }
+        },
+        resetReducerCancelOrder: (state) => {
+            state.statusCancelOrder = 'idle';
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(createNewOrder.pending, (state) => {
@@ -89,6 +93,6 @@ export const CreateSlice = createSlice({
     },
 });
 
-export const { setPath, setPickupDetails, setDeliveryDetails, setOrderDetails, resetReducer, listOrder,statusOrderListed, orderListed } = CreateSlice.actions;
+export const { setPath, setPickupDetails, setDeliveryDetails, setOrderDetails, resetReducer, listOrder, statusOrderListed, orderListed, resetReducerCancelOrder } = CreateSlice.actions;
 
 export default CreateSlice.reducer;

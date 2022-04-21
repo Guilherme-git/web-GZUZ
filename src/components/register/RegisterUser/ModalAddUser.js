@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser, setUsersProps }) => {
+const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser, setUsersProps, usersProps }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -159,6 +159,16 @@ const ModalAddUser = ({ openModalAddUser, handleOpenModalAddUser, setUsersProps 
     }
     return false;
   };
+
+  useEffect(() => {
+    if(usersProps)
+    {
+      setUsers(usersProps)
+    } else {
+      setUsers([])
+    }
+    
+  }, [usersProps])
 
   const handleCloseMsg = () => {
     setOpenMsg({ ...openMsg, open: false });

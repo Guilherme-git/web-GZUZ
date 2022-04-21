@@ -110,7 +110,7 @@ const ModalRegisterCompany = ({ openModaladdcompany, handleModalAddCompany, hand
     handleAddCompany({
       value: companyName,
       label: companyName,
-      adress: adress,
+      address: adress,
       ein: ein,
     });
     setCompanyName('');

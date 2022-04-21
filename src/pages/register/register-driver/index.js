@@ -1,5 +1,6 @@
 /* eslint-disable object-curly-newline */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../../api'
 
 import {
   Button,
@@ -15,6 +16,8 @@ import {
   InputLabel,
   InputAdornment,
   Typography,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -26,8 +29,10 @@ import {
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { setResetStatus, RegisterDriverRedux } from '../../../redux/login.slice'
 
-import { Images, Colors } from '../../../contants';
+import { Images, Colors, SERVER_IMAGES } from '../../../contants';
 import {
   REGISTER_DRIVERS_TITLE,
   REGISTER_DRIVERS_LABEL_NAME,
@@ -50,6 +55,10 @@ import {
   REGISTER_DRIVERS_LABEL_PASSWORD,
   REGISTER_DRIVERS_LABEL_CONFIRM_PASSWORD,
   REGISTER_DRIVERS_BTN_REGISTER,
+  REGISTER_MSG_PASSWORD_NOT_MATCH,
+  REGISTER_MSG_USER_REGISTERED_SUCCESS,
+  REGISTER_MSG_USER_REGISTERED_ERROR,
+  REGISTER_MSG_EMPTY_FIELDS
 } from '../../../config/ConfigDefault';
 import { Divider, ModalRegisterCompany } from '../../../components';
 
@@ -58,72 +67,73 @@ import { makeStyles } from '@mui/styles';
 const CONFIG_IMG_CARS = [
   {
     id: 1,
-    name: 'Ford Van E250',
-    description: 'L52 x W96 x H48 2500 Lbs',
+    model: 'Ford Van E250',
+    length: 'L52',
+    height: 'H48',
+    width: 'W96',
+    weight: '2500 Lbs',
+    //description: 'L52 x W96 x H48 2500 Lbs',
     image: Images.FordVanE250,
   },
   {
     id: 2,
-    name: 'Van Sprinter 2500',
-    description: 'L171 x W52 x H70 5000 Lbs',
+    model: 'Van Sprinter 2500',
+    length: 'L171',
+    height: 'H70',
+    width: 'W52',
+    weight: '5000 Lbs',
+    //description: 'L171 x W52 x H70 5000 Lbs',
     image: Images.VanSprinter2500,
   },
   {
     id: 3,
-    name: 'Flat Bed',
-    description: 'L171 x W52 x H70 5000 Lbs',
+    model: 'Flat Bed',
+    length: 'L171',
+    height: 'H70',
+    width: 'W52',
+    weight: '5000 Lbs',
+    //description: 'L171 x W52 x H70 5000 Lbs',
     image: Images.FlatBed,
   },
   {
     id: 4,
-    name: 'Pick Up Truck 16’',
-    description: 'L52 x W96 x H48 2500 Lbs',
+    model: 'Pick Up Truck 16’',
+    length: 'L52',
+    height: 'H48',
+    width: 'W96',
+    weight: '2500 Lbs',
+    //description: 'L52 x W96 x H48 2500 Lbs',
     image: Images.PickUpTruck16,
   },
   {
     id: 5,
-    name: 'Truck 16’',
-    description: 'L87 x W12 x H87 14500 Lbs',
+    model: 'Truck 16’',
+    length: 'L87',
+    height: 'H87',
+    width: 'W12',
+    weight: '14500 Lbs',
+    //description: 'L87 x W12 x H87 14500 Lbs',
     image: Images.Truck16,
   },
   {
     id: 6,
-    name: 'Truck 26’',
-    description: 'L52 x W96 x H90 22500 Lbs',
+    model: 'Truck 26’',
+    length: 'L52',
+    height: 'H90',
+    width: 'W96',
+    weight: '22500 Lbs',
+    //description: 'L52 x W96 x H90 22500 Lbs',
     image: Images.Truck26,
   },
   {
     id: 7,
-    name: 'Cart',
-    description: 'L87 x W12 x H87 14500 Lbs',
+    model: 'Cart',
+    length: 'L87',
+    height: 'H87',
+    width: 'W12',
+    weight: '14500 Lbs',
+    //description: 'L87 x W12 x H87 14500 Lbs',
     image: Images.Cart,
-  },
-];
-
-const companiesList = [
-  {
-    value: 'company',
-    label: 'company 01',
-    adress: 'Rua 01',
-    ein: '123456789',
-  },
-  {
-    value: 'company001',
-    label: 'company 02',
-    adress: 'Rua 01',
-    ein: '123456789',
-  },
-  {
-    value: 'company002',
-    label: 'company 03',
-    adress: 'Rua 01',
-    ein: '123456789',
-  },
-  {
-    value: 'company003',
-    label: 'company 04',
-    adress: 'Rua 01',
-    ein: '123456789',
   },
 ];
 
@@ -134,23 +144,23 @@ const InputNEw = styled('input')({
 const CONFIG_CHECKBOX = [
   {
     id: 1,
-    label: '18’',
+    label: '16',
   },
   {
     id: 2,
-    label: '18’',
+    label: '18',
   },
   {
     id: 3,
-    label: '24’',
+    label: '24',
   },
   {
     id: 4,
-    label: '26’',
+    label: '26',
   },
   {
     id: 5,
-    label: '53’',
+    label: '53',
   },
 ];
 
@@ -428,37 +438,176 @@ const useStyles = makeStyles((theme) => ({
 
 const RegisterDriver = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [companies, setCompanies] = useState([...companiesList]);
-  const [company, setCompany] = useState('');
+  const [companies, setCompanies] = useState([]);
+  const [dataVehicles, setDataVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [dataNumbers, setDataNumbers] = useState([]);
+  const [numbers, setNumbers] = useState([]);
   const [openModaladdcompany, setOpenModaladdcompany] = useState(false);
-  const [checkBox, setCheckBox] = useState({
-    id: 0,
-    label: '',
+  const resultRedux = useSelector(function (state) {
+    return state.login
   });
-  const [selectCars, setSelectCars] = useState({
-    id: 0,
+  const [document, setDocument] = useState();
+
+  const [openMsg, setOpenMsg] = useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+    msg: '',
+    type: 'success',
+  });
+  const { vertical, horizontal, open, msg, type } = openMsg;
+
+  const [values, setValues] = useState({
     name: '',
-    description: '',
+    companys: [],
+    transporter: '',
+    phone: '',
+    email: '',
+    position: '',
+    city: '',
+    state: '',
+    country: '',
+    status: false,
+    vehicle: '',
+    vehicle_status: false,
+    numbers: [],
+    document_driver_license: '',
+    document_vehicle_insurance: '',
+    sta: '',
+    vehicles: [],
+    password: '',
+    confirmPassword: '',
+    showPassword: false,
+    showConfirmPassword: false,
   });
+
+  useEffect(() => {
+    const result = async () => {
+      const responseNumbers = await api.get('/number/list');
+      setDataNumbers(responseNumbers.data)
+
+      const responseVehicles = await api.get('/vehicles/list');
+      setDataVehicles(responseVehicles.data)
+    }
+    result()
+  }, [])
+  console.log(values)
+
+  useEffect(() => {
+    if (resultRedux.status === 'success') {
+      setOpenMsg({
+        ...openMsg,
+        open: true,
+        msg: t(REGISTER_MSG_USER_REGISTERED_SUCCESS),
+        type: 'success',
+      });
+      setCompanies([]);
+      setVehicles([]);
+      setNumbers([]);
+      setValues({
+        name: '',
+        companys: [],
+        transporter: '',
+        phone: '',
+        email: '',
+        position: '',
+        city: '',
+        state: '',
+        country: '',
+        status: false,
+        vehicle: '',
+        vehicle_status: false,
+        numbers: [],
+        document_driver_license: '',
+        document_vehicle_insurance: '',
+        sta: '',
+        vehicles: [],
+        password: '',
+        confirmPassword: '',
+        showPassword: false,
+        showConfirmPassword: false,
+      })
+
+      setTimeout(() => {
+        dispatch(setResetStatus());
+      }, 5000);
+    }
+
+    if (resultRedux.status === 'failed') {
+      setOpenMsg({
+        ...openMsg,
+        open: true,
+        msg: t(REGISTER_MSG_USER_REGISTERED_ERROR),
+        type: 'error',
+      });
+      setTimeout(() => {
+        dispatch(setResetStatus());
+      }, 5000);
+    }
+  }, [resultRedux.status])
 
   const handleModalAddCompany = (valor) => {
     setOpenModaladdcompany(valor);
   };
 
-  const [values, setValues] = useState({
-    amount: '',
-    password: '',
-    confirmPassword: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-    showConfirmPassword: false,
-  });
+  const VerifyPassword = () => {
+    if (values.password !== values.confirmPassword) {
+      setOpenMsg({
+        ...openMsg,
+        open: true,
+        msg: t(REGISTER_MSG_PASSWORD_NOT_MATCH),
+        type: 'error',
+      });
+      return true;
+    }
+    return false;
+  };
+
+  const VerifyEmptyFields = () => {
+    if (values.name === '' || values.transporter === '' || values.phone === '' || values.email === '' || values.position === '' || values.city === '' ||
+      values.state === '' || values.country === '' || values.vehicle === '' || values.numbers.length === 0 || values.document_driver_license === '' ||
+      values.document_vehicle_insurance === '' || values.sta === '' || values.vehicles.length === 0 || values.password === '') {
+      setOpenMsg({ ...openMsg, open: true, msg: t(REGISTER_MSG_EMPTY_FIELDS), type: 'error' });
+      return true;
+    }
+    return false;
+  };
+
+  const handleCloseMsg = () => {
+    setOpenMsg({ ...openMsg, open: false });
+  };
+
   const handleChange = (prop) => (event) => {
-    console.log([prop])
     setValues({ ...values, [prop]: event.target.value });
   };
+
+  const handleChangeStatus = (prop) => {
+    setValues({ ...values, [prop]: !values.status });
+  };
+
+  const handleChangeVehicleStatus = (prop) => {
+    setValues({ ...values, [prop]: !values.vehicle_status });
+  };
+
+  const getBase64 = (file, cb) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result)
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
+
+  const handleDocument = (event) => {
+    getBase64(event.target.files[0], (result) => {
+      setValues({ ...values, [event.target.name]: result });
+    });
+  }
 
   const handleClickShowPassword = () => {
     setValues({
@@ -474,17 +623,46 @@ const RegisterDriver = () => {
     });
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleCompany = (event) => {
-    setCompany(event.target.value);
-  };
-
   const handleAddCompany = (valor) => {
     setCompanies([...companies, valor]);
+    setValues({ ...values, companys: [...values.companys, valor] })
   };
+
+  const handleChangeNumbers = (valor) => {
+    if (numbers.find(item => item.id === valor.id)) {
+      let arraySup = [];
+      arraySup.push(...numbers)
+      let index = arraySup.findIndex(item => item.id === valor.id);
+      arraySup.splice(index, 1)
+      setNumbers(arraySup)
+      setValues({ ...values, numbers: arraySup })
+    } else {
+      setNumbers([...numbers, { id: valor.id }])
+      setValues({ ...values, numbers: [...numbers, { id: valor.id }] })
+    }
+  }
+
+  const handleAddVehicles = (valor) => {
+    if (vehicles.find(item => item.id === valor.id)) {
+      let arraySup = [];
+      arraySup.push(...vehicles)
+      let index = arraySup.findIndex(item => item.id === valor.id)
+      arraySup.splice(index, 1)
+      setVehicles(arraySup)
+      setValues({ ...values, vehicles: arraySup })
+    } else {
+      setVehicles([...vehicles, { id: valor.id }])
+      setValues({ ...values, vehicles: [...vehicles, { id: valor.id }] })
+    }
+  }
+
+  const handleSubmit = () => {
+    VerifyPassword();
+    VerifyEmptyFields();
+    if (VerifyEmptyFields() === false && VerifyPassword() === false) {
+      dispatch(RegisterDriverRedux(values))
+    }
+  }
 
   return (
     <div className={classes.container}>
@@ -500,6 +678,8 @@ const RegisterDriver = () => {
         </Divider>
         <TextField
           size="small"
+          value={values.name}
+          onChange={handleChange('name')}
           className={`${classes.input} ${classes.items}`}
           label={t(REGISTER_DRIVERS_LABEL_NAME)}
           type="text"
@@ -508,8 +688,7 @@ const RegisterDriver = () => {
           <TextField
             select
             label={t(REGISTER_DRIVERS_LABEL_COMPANY)}
-            value={company}
-            onChange={handleCompany}
+            value={values.company}
             className={classes.companyInput}
             variant="outlined"
             size="small"
@@ -531,20 +710,25 @@ const RegisterDriver = () => {
         </div>
         <TextField
           size="small"
+          value={values.transporter}
+          onChange={handleChange('transporter')}
           className={`${classes.input} ${classes.items}`}
-          // className={[classes.input, classes.items]}
           label={t(REGISTER_DRIVERS_LABEL_CARRIER)}
           type="text"
         />
         <div className={classes.containerCellPhone}>
           <TextField
             size="small"
+            value={values.phone}
+            onChange={handleChange('phone')}
             type="number"
             className={classes.cellPhone}
             label={t(REGISTER_DRIVERS_LABEL_PHONE)}
           />
           <TextField
             size="small"
+            value={values.email}
+            onChange={handleChange('email')}
             className={classes.email}
             label={t(REGISTER_DRIVERS_LABEL_EMAIL)}
             type="text"
@@ -552,26 +736,33 @@ const RegisterDriver = () => {
         </div>
         <TextField
           size="small"
+          value={values.position}
+          onChange={handleChange('position')}
           className={`${classes.input} ${classes.items}`}
-          // className={[classes.input, classes.items]}
           label={t(REGISTER_DRIVERS_LABEL_POSITION)}
           type="text"
         />
         <div className={classes.containerCity}>
           <TextField
             size="small"
+            value={values.city}
+            onChange={handleChange('city')}
             className={classes.city}
             label={t(REGISTER_DRIVERS_LABEL_CITY)}
             type="text"
           />
           <TextField
             size="small"
+            value={values.state}
+            onChange={handleChange('state')}
             className={classes.state}
             label={t(REGISTER_DRIVERS_LABEL_STATE)}
             type="text"
           />
           <TextField
             size="small"
+            value={values.country}
+            onChange={handleChange('country')}
             className={classes.country}
             label={t(REGISTER_DRIVERS_LABEL_COUNTRY)}
             type="text"
@@ -580,19 +771,22 @@ const RegisterDriver = () => {
         <div className={classes.containerSwitch}>
           <label>Status</label>
           <FormGroup>
-            <FormControlLabel control={<Switch />} label={t(REGISTER_DRIVERS_LABEL_ACTIVE)} />
+            <FormControlLabel onChange={() => handleChangeStatus('status')} control={<Switch checked={values.status} />} label={t(REGISTER_DRIVERS_LABEL_ACTIVE)} />
           </FormGroup>
         </div>
         <div className={classes.containerVehicle}>
           <TextField
             size="small"
+            value={values.vehicle}
+            onChange={handleChange('vehicle')}
             className={classes.vehicle}
             label={t(REGISTER_DRIVERS_LABEL_VEHICLE)}
             type="text"
           />
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              onChange={() => handleChangeVehicleStatus('vehicle_status')}
+              control={<Checkbox checked={values.vehicle_status} defaultChecked />}
               label={t(REGISTER_DRIVERS_CHECKBOX_VEHICLE)}
               className={classes.checkVehicle}
             />
@@ -600,16 +794,16 @@ const RegisterDriver = () => {
         </div>
 
         <FormGroup className={classes.containerCheckbox}>
-          {CONFIG_CHECKBOX.map(({ label, id }) => (
+          {dataNumbers.map((value) => (
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={id === checkBox.id}
-                  onChange={() => setCheckBox({ id, label })}
+                  checked={numbers.find(item => item.id === value.id) ? true : false}
+                  onChange={() => handleChangeNumbers({ id: value.id, label: value.number })}
                 />
               }
-              label={label}
-              key={id}
+              label={value.number + "’"}
+              key={value.id}
             />
           ))}
         </FormGroup>
@@ -617,8 +811,12 @@ const RegisterDriver = () => {
         <div className={classes.containerUpload}>
           <label>{t(REGISTER_DRIVERS_LABEL_DRIVER_LICENSE)}</label>
 
-          <label htmlFor="contained-button-file">
-            <InputNEw accept="image/*" id="contained-button-file" multiple type="file" />
+          <label htmlFor="document_driver_license">
+            <InputNEw
+              onChange={event => handleDocument(event)}
+              onClick={event =>  event.target.value = null }
+ 
+              name='document_driver_license' accept="image/*" id="document_driver_license" multiple type="file" />
             <Button
               variant="contained"
               component="span"
@@ -635,8 +833,12 @@ const RegisterDriver = () => {
         <div className={classes.containerUpload}>
           <label>{t(REGISTER_DRIVERS_LABEL_VEHICLE_INSURANCE)}</label>
 
-          <label htmlFor="contained-button-file">
-            <InputNEw accept="image/*" id="contained-button-file" multiple type="file" />
+          <label htmlFor="document_vehicle_insurance">
+            <InputNEw
+              onChange={event => handleDocument(event)}
+              onClick={event =>  event.target.value = null }
+              name='document_vehicle_insurance'
+              accept="image/*" id="document_vehicle_insurance" multiple type="file" />
             <Button
               variant="contained"
               startIcon={<UploadFileIcon />}
@@ -653,8 +855,12 @@ const RegisterDriver = () => {
         <div className={classes.containerUpload}>
           <label>{t(REGISTER_DRIVERS_LABEL_STA)}</label>
 
-          <label htmlFor="contained-button-file">
-            <InputNEw accept="image/*" id="contained-button-file" multiple type="file" />
+          <label htmlFor="sta">
+            <InputNEw
+              onChange={event => handleDocument(event)}
+              onClick={event =>  event.target.value = null }
+              name='sta'
+              accept="image/*" id="sta" multiple type="file" />
             <Button
               variant="contained"
               startIcon={<UploadFileIcon />}
@@ -668,22 +874,24 @@ const RegisterDriver = () => {
           </label>
           <label>{t(REGISTER_DRIVERS_LABEL_DRIVER_DESCRIPTION)}</label>
         </div>
+
         <div className={classes.containerCars}>
-          {CONFIG_IMG_CARS.map(({ name, image, description, id }) => (
+          {dataVehicles.map((value) => (
             <div
               className={classes.detailsCars}
-              key={id}
-              onClick={() => setSelectCars({ id, name, description })}
+              key={value.id}
             >
               <div className={classes.containerImgCar}>
                 <div className={classes.selectedCar}>
-                  <Checkbox checked={id === selectCars.id} />
+                  <Checkbox
+                    checked={vehicles.find(item => item.id === value.id) ? true : false}
+                    onClick={() => handleAddVehicles({ id: value.id, model: value.model, length: value.length, weight: value.weight, height: value.height, width: value.width, image: value.image })} />
                 </div>
-                <img src={image} alt="details cars" />
+                <img src={`${SERVER_IMAGES}/${value.image}`} alt="details cars" />
               </div>
               <div className={classes.containerTextCars}>
-                <label>{name} </label>
-                <label>{description} </label>
+                <label>{value.model} </label>
+                <label>{value.length + " x " + value.width + " x " + value.height + " " + value.weight} </label>
               </div>
             </div>
           ))}
@@ -703,7 +911,7 @@ const RegisterDriver = () => {
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
+                    onMouseDown={event => event.preventDefault()}
                     edge="end"
                   >
                     {values.showPassword ? <VisibilityOff /> : <Visibility />}
@@ -726,7 +934,7 @@ const RegisterDriver = () => {
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowConfirmPassword}
-                    onMouseDown={handleMouseDownPassword}
+                    onMouseDown={event => event.preventDefault()}
                     edge="end"
                   >
                     {values.showPassword ? <VisibilityOff /> : <Visibility />}
@@ -736,7 +944,8 @@ const RegisterDriver = () => {
               label={t(REGISTER_DRIVERS_LABEL_CONFIRM_PASSWORD)}
             />
           </FormControl>
-          <Button variant="contained" className={classes.BtnRegister}>
+          <Button onClick={handleSubmit}
+            variant="contained" className={classes.BtnRegister}>
             {t(REGISTER_DRIVERS_BTN_REGISTER)}
           </Button>
         </div>
@@ -751,6 +960,17 @@ const RegisterDriver = () => {
         handleModalAddCompany={handleModalAddCompany}
         handleAddCompany={handleAddCompany}
       />
+
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleCloseMsg}
+      >
+        <Alert onClose={handleCloseMsg} severity={type} sx={{ width: '100%' }}>
+          {msg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

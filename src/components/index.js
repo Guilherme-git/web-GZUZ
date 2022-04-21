@@ -8,8 +8,8 @@ import OrdersDriver from './home/driver/orders/Orders';
 import MapsUser from './home/user/maps/Maps';
 import MapsDriver from './home/driver/maps/Maps';
 import Divider from './Divider';
-// import ModalNewOffer from './ModalNewOffer/ModalNewOffer';
-// import ModalCancelOrder from './ModalCancelOrder/ModalCancelOrder';
+import ModalNewOffer from './ModalNewOffer/ModalNewOffer';
+import ModalCancelOrder from './ModalCancelOrder/ModalCancelOrder';
 import ModalSendOffer from './ModalSendOffer/ModalSendOffer';
 // import ModalProposalAccepted from './ModalProposalAccepted/ModalProposalAccepted';
 import ModalShowImages from './ModalShowImages/ModalShowImages';
@@ -30,8 +30,8 @@ export {
   MapsUser,
   MapsDriver,
   Divider,
-  //   ModalNewOffer,
-  //   ModalCancelOrder,
+  ModalNewOffer,
+  ModalCancelOrder,
   Steps,
   BasicBreadcrumbs,
   CollapseComponent,

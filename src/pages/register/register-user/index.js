@@ -271,14 +271,6 @@ const RegisterUser = () => {
     SetOpenModalAddUser(valor);
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleClickShowConfirmPassword = () => {
-    SetShowConfirmPassword(!showConfirmPassword);
-  };
-
   const VerifyEmptyFields = () => {
     if (name === '' || password === '' || confirmPassword === '' || email === '') {
       setOpenMsg({ ...openMsg, open: true, msg: t(REGISTER_MSG_EMPTY_FIELDS), type: 'error' });
@@ -308,11 +300,11 @@ const RegisterUser = () => {
     if (VerifyEmptyFields() === false && VerifyPassword() === false) {
       dispatch(
         RegisterUserRedux({
-          company,
+          companie: company,
           name,
           email,
           phone,
-          zip: zipCode,
+          cep: zipCode,
           address,
           country,
           state,
@@ -333,6 +325,7 @@ const RegisterUser = () => {
         type: 'success',
       });
 
+      setUsers([]);
       setName('');
       setCompany('');
       setEmail('')
@@ -484,7 +477,7 @@ const RegisterUser = () => {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={() => setShowPassword(!showPassword)}
                       edge="end"
                     >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
@@ -510,7 +503,7 @@ const RegisterUser = () => {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowConfirmPassword}
+                      onClick={() => SetShowConfirmPassword(!showConfirmPassword)}
                       edge="end"
                     >
                       {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
@@ -539,6 +532,7 @@ const RegisterUser = () => {
       </div>
       <ModalAddUser
         setUsersProps={setUsers}
+        usersProps={users}
         openModalAddUser={openModalAddUser}
         handleOpenModalAddUser={handleOpenModalAddUser}
       />

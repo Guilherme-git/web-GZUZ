@@ -532,18 +532,13 @@ export default () => {
     const [observation, setObservation] = useState('');
     const [observationCargo, setObservationCargo] = useState('');
 
-    let [carga, setCarga] = useState();
-
-    const [carga2, setCarga2] = useState([{
+    const [cargas, setCargas] = useState([{
         carga: '', picture: {}
     }])
     const [dimensao, setDimensao] = useState([
         { altura: '', largura: '', profundidade: '', peso: '', feetOrCentimeter: '', lbsOrKgs: '' }
     ])
 
-    const [dataDimension, setDataDimension] = useState([
-        { altura: '', largura: '', profundidade: '', peso: '' }
-    ]);
     const [selectedCars, setSelectedCars] = React.useState([]);
 
     const resultRedux = useSelector(function (state) {
@@ -552,8 +547,8 @@ export default () => {
 
     useEffect(() => {
         if (Object.keys(resultRedux.orderDetails.data).length !== 0) {
-            setCarga(resultRedux.orderDetails.data.carga);
-            setDataDimension(resultRedux.orderDetails.data.dimensoes);
+            setCargas(resultRedux.orderDetails.data.carga);
+            setDimensao(resultRedux.orderDetails.data.dimensoes);
             setFeetOrCentimeter(resultRedux.orderDetails.data.tipo_peso);
             setLbsOrKgs(resultRedux.orderDetails.data.tipo_altura);
             seTotalWeight(resultRedux.orderDetails.data.peso_total);
@@ -566,25 +561,24 @@ export default () => {
     }, [resultRedux.orderDetails.data])
 
     const addCampos = () => {
-        setCarga2([...carga2, { carga: '', picture: {} }])
+        setCargas([...cargas, { carga: '', picture: {} }])
     }
 
     const mudarCampos = (event, index) => {
         const { value, name } = event.target;
         let newCarga = [];
-        newCarga.push(...carga2);
-        newCarga[index] = { ...carga2[index], [name]: value }
-        setCarga2(newCarga)
+        newCarga.push(...cargas);
+        newCarga[index] = { ...cargas[index], [name]: value }
+        setCargas(newCarga)
     }
 
     const mudarCamposPicture = (event, index) => {
         const { name } = event.target;
         const file = event.target.files[0];
-        console.log(file)
         let newCarga = [];
-        newCarga.push(...carga2);
-        newCarga[index] = { ...carga2[index], [name]: file }
-        setCarga2(newCarga)
+        newCarga.push(...cargas);
+        newCarga[index] = { ...cargas[index], [name]: file }
+        setCargas(newCarga)
     }
 
     const addDimensao = () => {
@@ -605,10 +599,10 @@ export default () => {
     }
 
     const remover = () => {
-        if (carga2.length > 1) {
-            const arrayCarga2 = [...carga2]
-            arrayCarga2.pop()
-            setCarga2(arrayCarga2)
+        if (cargas.length > 1) {
+            const arraycargas = [...cargas]
+            arraycargas.pop()
+            setCargas(arraycargas)
         }
 
         if (dimensao.length > 1) {
@@ -616,28 +610,7 @@ export default () => {
             arrayDimensao.pop()
             setDimensao(arrayDimensao)
         }
-
     }
-
-    const handleAddDimension = (event) => {
-        event.preventDefault();
-        setDataDimension([...dataDimension, { altura: '', largura: '', profundidade: '', peso: '' }]);
-    };
-
-    const handleRemoveDimension = (event, index) => {
-        event.preventDefault();
-        const arraySupport = [...dataDimension];
-        arraySupport.splice(index, 1);
-        setDataDimension(arraySupport);
-    };
-
-    const handleDimension = (event, index) => {
-        const { value, name } = event.target;
-        let newState = [];
-        newState.push(...dataDimension);
-        newState[index] = { ...dataDimension[index], [name]: value };
-        setDataDimension(newState);
-    };
 
     const handleTakePicture = (event) => {
         event.preventDefault();
@@ -664,8 +637,8 @@ export default () => {
 
     const checkFields = () => {
         if (
-            carga === '' ||
-            dataDimension?.length === 0 ||
+            cargas?.length  === 0 ||
+            dimensao?.length === 0 ||
             feetOrCentimeter === '' ||
             lbsOrKgs === '' ||
             purchaseOrder === '' ||
@@ -679,19 +652,19 @@ export default () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const data = {
-        //     carga: carga,
-        //     dimensoes: dataDimension,
-        //     tipo_peso: feetOrCentimeter,
-        //     tipo_altura: lbsOrKgs,
-        //     peso_total: totalWeight,
-        //     foto: selectedFiles,
-        //     numeros: purchaseOrder,
-        //     observacao: observation,
-        //     tipo: observationCargo,
-        //     automoveis: selectedCars
-        // };
-        // dispatch(setOrderDetails(data));
+        const data = {
+            cargas: cargas,
+            dimensoes: dimensao,
+            tipo_peso: feetOrCentimeter,
+            tipo_altura: lbsOrKgs,
+            peso_total: totalWeight,
+            foto: selectedFiles,
+            numeros: purchaseOrder,
+            observacao: observation,
+            tipo: observationCargo,
+            automoveis: selectedCars
+        };
+        dispatch(setOrderDetails(data));
 
         console.log(dimensao)
     };
@@ -774,7 +747,7 @@ export default () => {
                         <label>{t(TITLE_PICKING_UP_03)}</label>
                         <label>{t(TITLE_PICKING_UP_04)}</label>
                     </div>
-                    {carga2?.map((item, index) => {
+                    {cargas?.map((item, index) => {
                         return (
                             <div className="cargo">
                                 <div className={classes.containerCargo}>
