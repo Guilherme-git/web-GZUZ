@@ -178,8 +178,6 @@ const CreatePickupDetails = () => {
   };
 
   const ValidationFields = () => {
-    //validation input
-
     const MSG_ERROR = 'Campo obrigatório';
 
     const error = {};
@@ -199,11 +197,7 @@ const CreatePickupDetails = () => {
       error.company = MSG_ERROR;
       return error;
     }
-    if (
-      contactName?.trim() === '' ||
-      contactName?.trim() === null ||
-      contactName?.trim() === undefined
-    ) {
+    if (contactName?.trim() === '' || contactName?.trim() === null ||contactName?.trim() === undefined) {
       error.contactName = MSG_ERROR;
       return error;
     }

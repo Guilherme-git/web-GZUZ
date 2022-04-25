@@ -71,7 +71,9 @@
   "ORDER_DETAILS": {
     "PATH_SEE_MORE": "Ver más",
     "PATH_HOME": "Inicio",
-    "TITLE_OPEN_REQUEST": "Pedido Abierto",
+    "TITLE_OPEN_REQUEST": "Orden abierta",
+    "TITLE_IN_PROGRESS_REQUEST": "Orden en curso",
+    "TITLE_CANCELED_REQUEST": "Orden cancelada",
     "MSG_UNANSWERED": "No respondido",
     "TITLE_PICKUP": "Recogida",
     "TITLE_DROPOFF": "Entrega",

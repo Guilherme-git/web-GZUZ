@@ -72,6 +72,8 @@
     "PATH_SEE_MORE": "VER MAIS",
     "PATH_HOME": "Início",
     "TITLE_OPEN_REQUEST": "Pedido Aberto",
+    "TITLE_IN_PROGRESS_REQUEST": "Pedido em andamento",
+    "TITLE_CANCELED_REQUEST": "Pedido cancelado",
     "MSG_UNANSWERED": "Não respondido",
     "TITLE_PICKUP": "Retirada",
     "TITLE_DROPOFF": "Entrega",

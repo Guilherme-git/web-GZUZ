@@ -15,6 +15,8 @@ import {
 import {
     PATH_SEE_MORE,
     TITLE_OPEN_REQUEST,
+    TITLE_IN_PROGRESS_REQUEST,
+    TITLE_CANCELED_REQUEST,
     MSG_UNANSWERED,
     TITLE_PICKUP,
     TITLE_DROPOFF,
@@ -38,7 +40,7 @@ import {
     ORDER_DETAILS_MSG_CANCELED_ORDER
 } from '../../../config/ConfigDefault';
 import { useSelector, useDispatch } from 'react-redux';
-import { listOrder } from '../../../redux/createOrder.slice';
+import { listOrder, setStatus } from '../../../redux/createOrder.slice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 
@@ -52,7 +54,9 @@ const useStyles = makeStyles((theme) => ({
     },
     title: ({ status }) => ({
         color: theme.palette.primary.BRANCO,
-        backgroundColor: status === 'Cancelado' ? '#EA6766' : '#6ed949',
+        backgroundColor: status === 'Canceled' ? '#EA6766' : status === 'Open request' ? '#6ed949' : theme.palette.primary.AMARELO,
+      
+        //backgroundColor: status === 'In progress' && ,
         width: '108px',
         height: '22px',
         borderRadius: '16px',
@@ -242,7 +246,7 @@ const useStyles = makeStyles((theme) => ({
     },
     btnOrders: (props) => ({
         '& .btnCancelOrder': {
-            backgroundColor: props.status === 'Cancelado' ? '#EA6766' : theme.palette.primary.AMARELO
+            backgroundColor: props.status === 'Canceled' ? '#EA6766' : theme.palette.primary.AMARELO
         },
         '& button': {
             backgroundColor: theme.palette.primary.AMARELO,
@@ -303,6 +307,8 @@ export default () => {
 
     useEffect(() => {
         dispatch(listOrder(id));
+        dispatch(setStatus()) // depois remover
+        console.log( resultRedux.orderListed )
     }, [dispatch, id]);
 
     const handleModalShowImages = (valor) => {
@@ -352,182 +358,185 @@ export default () => {
 
     let Content;
 
-    if (resultRedux.statusOrderListed === 'success') {
-        Content = (
-            <>
-                 <ModalNewOffer handleOpenOffer={handleOpenOffer} modalOffer={modalOffer} />
-                <ModalCancelOrder
-                    handleCancelOffer={handleCancelOffer}
-                    modalCancelOrder={modalCancelOrder}
-                    usuarioId={usuario}
-                    ordemId={id}
-                />
-                <ModalShowImages
-                    modalShowImages={modalShowImages}
-                    handleModalShowImages={handleModalShowImages}
-                />
-                <div className={classes.container}>
-                    <label className={classes.title}>
-                        {status === 'Cancelado' ? t(ORDER_DETAILS_MSG_CANCELED_ORDER) : t(TITLE_OPEN_REQUEST)}{' '}
-                    </label>
-                    {status !== 'Cancelado' && <Unanswered />}
-    
-                    <ProductDetails />
-                    <div className={classes.details}>
-                        {/* 1 parte */}
-                        <div className="detailsWrap">
-                            <Divider
-                                textAlign="left"
-                                className="divider"
-                                colorDivider={Colors.AMARELO}
-                                colorText={Colors.CINZA80}
-                            >
-                                {t(MSG_PICKUP_DETAILS)}
-                            </Divider>
-                            <div className="confirmationDetails">
-                                <div className="horizontal">
-                                    <label>{t(TITLE_BILL_TO)}:</label>
-                                    <label>{detalhe_retirada?.conta}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_DATE_ORDER_DETAIL)}:</label>
-                                    <label>{DETALHE_RETIRADA_DATA}</label>
-                                    <label>{t(TITLE_TIME)}:</label>
-                                    <label>{detalhe_retirada?.hora}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_COMPANY_NAME)}:</label>
-                                    <label>{detalhe_retirada?.empresa}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_CONTACT_NAME)}:</label>
-                                    <label>{detalhe_retirada?.contato}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_EMAIL)}:</label>
-                                    <label>{detalhe_retirada?.email}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_PHONE)}:</label>
-                                    <label>{detalhe_retirada?.telefone}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_ADRESS)}:</label>
-                                    <label>{detalhe_retirada?.endereco}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_CITY)}:</label>
-                                    <label>{detalhe_retirada?.cidade}</label>
-                                    <label>{t(TITLE_STATE)}:</label>
-                                    <label>{detalhe_retirada?.estado}</label>
-                                    <label>{t(TITLE_ZIPCODE)}:</label>
-                                    <label>{detalhe_retirada?.cep}</label>
-                                </div>
+    // if (resultRedux.statusOrderListed === 'success') {
+
+    // }
+
+    // if (resultRedux.statusOrderListed === 'failed') {
+    //     Content = <div>não encontrado/not found/no encontrado</div>;
+    // }
+
+    // if (resultRedux.statusOrderListed === 'loading') {
+    //     return <div>Loading</div>;
+    // }
+
+    Content = (
+        <>
+            <ModalNewOffer handleOpenOffer={handleOpenOffer} modalOffer={modalOffer} />
+            
+            <ModalCancelOrder
+                handleCancelOffer={handleCancelOffer}
+                modalCancelOrder={modalCancelOrder}
+                usuarioId={usuario}
+                ordemId={id}
+            />
+            <ModalShowImages
+                modalShowImages={modalShowImages}
+                handleModalShowImages={handleModalShowImages}
+            />
+            <div className={classes.container}>
+                <label className={classes.title}>
+                    {status === 'Open request' && t(TITLE_OPEN_REQUEST)}{' '}
+                    {status === 'In progress' && t(TITLE_IN_PROGRESS_REQUEST)}{' '}
+                    {status === 'Canceled' && t(TITLE_CANCELED_REQUEST)}{' '}
+                </label>
+                {status !== 'Canceled' && <Unanswered />}
+
+                <ProductDetails />
+                <div className={classes.details}>
+                    {/* 1 parte */}
+                    <div className="detailsWrap">
+                        <Divider
+                            textAlign="left"
+                            className="divider"
+                            colorDivider={Colors.AMARELO}
+                            colorText={Colors.CINZA80}
+                        >
+                            {t(MSG_PICKUP_DETAILS)}
+                        </Divider>
+                        <div className="confirmationDetails">
+                            <div className="horizontal">
+                                <label>{t(TITLE_BILL_TO)}:</label>
+                                <label>{detalhe_retirada?.conta}</label>
                             </div>
-                        </div>
-    
-                        {/* 2 parte */}
-                        <div className="detailsWrap">
-                            <Divider
-                                textAlign="left"
-                                className="divider"
-                                colorDivider={Colors.AMARELO}
-                                colorText={Colors.CINZA80}
-                            >
-                                {t(TITLE_DELIVERY_DETAILS)}
-                            </Divider>
-                            <div className="confirmationDetails">
-                                <div className="horizontal">
-                                    <label>{t(TITLE_BILL_TO)}:</label>
-                                    <label>{detalhe_entrega}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_DATE_ORDER_DETAIL)}:</label>
-                                    <label>{DETALHE_ENTREGA_DATA}</label>
-                                    <label>{t(TITLE_TIME)}:</label>
-                                    <label>{detalhe_entrega}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_COMPANY_NAME)}:</label>
-                                    <label>{detalhe_entrega?.empresa}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_CONTACT_NAME)}:</label>
-                                    <label>{detalhe_entrega?.contato}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_EMAIL)}:</label>
-                                    <label>{detalhe_entrega?.email}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_PHONE)}:</label>
-                                    <label>{detalhe_entrega?.telefone}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_ADRESS)}:</label>
-                                    <label>{detalhe_entrega?.endereco}</label>
-                                </div>
-                                <div className="horizontal">
-                                    <label>{t(TITLE_CITY)}:</label>
-                                    <label>{detalhe_entrega?.cidade}</label>
-                                    <label>{t(TITLE_STATE)}:</label>
-                                    <label>{detalhe_entrega?.estado}</label>
-                                    <label>{t(TITLE_ZIPCODE)}:</label>
-                                    <label>{detalhe_entrega?.cep}</label>
-                                </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_DATE_ORDER_DETAIL)}:</label>
+                                <label>{DETALHE_RETIRADA_DATA}</label>
+                                <label>{t(TITLE_TIME)}:</label>
+                                <label>{detalhe_retirada?.hora}</label>
                             </div>
-                        </div>
-    
-                        {/* 3 parte */}
-                        <div className="detailsWrap">
-                            <Divider
-                                textAlign="left"
-                                className="divider"
-                                colorDivider={Colors.AMARELO}
-                                colorText={Colors.CINZA80}
-                            >
-                                {t(TITLE_ORDER_DETAILS)}
-                            </Divider>
-                            <div className="detailsOrdem">
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a
-                                    consectetur lectus. Vivamus augue velit, dictum at malesuada et.
-                                </p>
+                            <div className="horizontal">
+                                <label>{t(TITLE_COMPANY_NAME)}:</label>
+                                <label>{detalhe_retirada?.empresa}</label>
                             </div>
-                        </div>
-    
-                        <div className={classes.btnOrders}>
-                            <Button
-                                className="btnCancelOrder"
-                                variant="contained"
-                                onClick={() => (status === 'Cancelado' ? false : handleCancelOffer(true))}
-                            >
-                                {status === 'Cancelado'
-                                    ? t(ORDER_DETAILS_MSG_CANCELED_ORDER)
-                                    : t(TITLE_BTN_CANCEL_ORDER)}
-                            </Button>
-                            <Button variant="contained" onClick={() => navigate('/homeUsers')}>
-                                {t(TITLE_BTN_EDIT_OFFER)}
-                            </Button>
-                            <div className="back">
-                                <Button variant="contained" onClick={() => navigate('/homeUsers')}>
-                                    {t(ORDER_DETAILS_BTN_BACK)}
-                                </Button>
+                            <div className="horizontal">
+                                <label>{t(TITLE_CONTACT_NAME)}:</label>
+                                <label>{detalhe_retirada?.contato}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_EMAIL)}:</label>
+                                <label>{detalhe_retirada?.email}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_PHONE)}:</label>
+                                <label>{detalhe_retirada?.telefone}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_ADRESS)}:</label>
+                                <label>{detalhe_retirada?.endereco}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_CITY)}:</label>
+                                <label>{detalhe_retirada?.cidade}</label>
+                                <label>{t(TITLE_STATE)}:</label>
+                                <label>{detalhe_retirada?.estado}</label>
+                                <label>{t(TITLE_ZIPCODE)}:</label>
+                                <label>{detalhe_retirada?.cep}</label>
                             </div>
                         </div>
                     </div>
+
+                    {/* 2 parte */}
+                    <div className="detailsWrap">
+                        <Divider
+                            textAlign="left"
+                            className="divider"
+                            colorDivider={Colors.AMARELO}
+                            colorText={Colors.CINZA80}
+                        >
+                            {t(TITLE_DELIVERY_DETAILS)}
+                        </Divider>
+                        <div className="confirmationDetails">
+                            <div className="horizontal">
+                                <label>{t(TITLE_BILL_TO)}:</label>
+                                <label>{detalhe_entrega}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_DATE_ORDER_DETAIL)}:</label>
+                                <label>{DETALHE_ENTREGA_DATA}</label>
+                                <label>{t(TITLE_TIME)}:</label>
+                                <label>{detalhe_entrega}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_COMPANY_NAME)}:</label>
+                                <label>{detalhe_entrega?.empresa}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_CONTACT_NAME)}:</label>
+                                <label>{detalhe_entrega?.contato}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_EMAIL)}:</label>
+                                <label>{detalhe_entrega?.email}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_PHONE)}:</label>
+                                <label>{detalhe_entrega?.telefone}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_ADRESS)}:</label>
+                                <label>{detalhe_entrega?.endereco}</label>
+                            </div>
+                            <div className="horizontal">
+                                <label>{t(TITLE_CITY)}:</label>
+                                <label>{detalhe_entrega?.cidade}</label>
+                                <label>{t(TITLE_STATE)}:</label>
+                                <label>{detalhe_entrega?.estado}</label>
+                                <label>{t(TITLE_ZIPCODE)}:</label>
+                                <label>{detalhe_entrega?.cep}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 3 parte */}
+                    <div className="detailsWrap">
+                        <Divider
+                            textAlign="left"
+                            className="divider"
+                            colorDivider={Colors.AMARELO}
+                            colorText={Colors.CINZA80}
+                        >
+                            {t(TITLE_ORDER_DETAILS)}
+                        </Divider>
+                        <div className="detailsOrdem">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a
+                                consectetur lectus. Vivamus augue velit, dictum at malesuada et.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className={classes.btnOrders}>
+                        <Button
+                            className="btnCancelOrder"
+                            variant="contained"
+                            onClick={() => (status === 'Canceled' ? false : handleCancelOffer(true))}
+                        >
+                            {status === 'Canceled' ? t(ORDER_DETAILS_MSG_CANCELED_ORDER) : t(TITLE_BTN_CANCEL_ORDER)}
+                        </Button>
+                        <Button variant="contained" onClick={() => navigate('/homeUsers')}>
+                            {t(TITLE_BTN_EDIT_OFFER)}
+                        </Button>
+                        <div className="back">
+                            <Button variant="contained" onClick={() => navigate('/homeUsers')}>
+                                {t(ORDER_DETAILS_BTN_BACK)}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-            </>
-        );  
-    }
-
-    if (resultRedux.statusOrderListed === 'failed') {
-        Content = <div>não encontrado/not found/no encontrado</div>;
-    }
-
-    if (resultRedux.statusOrderListed === 'loading') {
-        return <div>Loading</div>;
-    }
+            </div>
+        </>
+    );
 
     return (
         <div className="container-homeUsers">

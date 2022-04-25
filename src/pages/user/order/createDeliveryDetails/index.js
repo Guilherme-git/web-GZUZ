@@ -118,17 +118,17 @@ const CreateDeliveryDetails = () => {
   });
 
   useEffect(() => {
-    if (Object.keys(resultRedux.deliveryDetails.data).length !== 0) {
-      setCompany(resultRedux.deliveryDetails.data.empresa);
-      setContactName(resultRedux.deliveryDetails.data.contato);
-      setEmail(resultRedux.deliveryDetails.data.email);
-      setPhone(resultRedux.deliveryDetails.data.telefone);
-      setAdress(resultRedux.deliveryDetails.data.endereco);
-      setDate(resultRedux.deliveryDetails.data.data);
-      setCity(resultRedux.deliveryDetails.data.cidade);
-      setState(resultRedux.deliveryDetails.data.estado);
-      setZipCode(resultRedux.deliveryDetails.data.cep);
-    }
+    // if (Object.keys(resultRedux.deliveryDetails.data).length !== 0) {
+    //   setCompany(resultRedux.deliveryDetails.data.empresa);
+    //   setContactName(resultRedux.deliveryDetails.data.contato);
+    //   setEmail(resultRedux.deliveryDetails.data.email);
+    //   setPhone(resultRedux.deliveryDetails.data.telefone);
+    //   setAdress(resultRedux.deliveryDetails.data.endereco);
+    //   setDate(resultRedux.deliveryDetails.data.data);
+    //   setCity(resultRedux.deliveryDetails.data.cidade);
+    //   setState(resultRedux.deliveryDetails.data.estado);
+    //   setZipCode(resultRedux.deliveryDetails.data.cep);
+    // }
   }, []);
 
   const handleSubmit = (e) => {

@@ -815,8 +815,8 @@ const RegisterDriver = () => {
             <InputNEw
               onChange={event => handleDocument(event)}
               onClick={event =>  event.target.value = null }
- 
-              name='document_driver_license' accept="image/*" id="document_driver_license" multiple type="file" />
+              name='document_driver_license' accept="image/*" 
+              id="document_driver_license" multiple type="file" />
             <Button
               variant="contained"
               component="span"

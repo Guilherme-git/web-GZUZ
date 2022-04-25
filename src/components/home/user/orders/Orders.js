@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
     width: '150px',
     textAlign: 'center'
   },
-  queued: {
+  open: {
     backgroundColor: '#6ed949',
     borderRadius: '16px',
     padding: '5px',
@@ -318,7 +318,7 @@ export default () => {
   const ReturnStatus = (status) => {
     switch (status) {
       case 'Open request':
-        return <div className={classes.queued}>{t(STATUS_OPEN)}</div>;
+        return <div className={classes.open}>{t(STATUS_OPEN)}</div>;
       case 'In progress':
         return <div className={classes.inprogress}>{t(STATUS_PROGRESS)}</div>;
       case 'Complete':

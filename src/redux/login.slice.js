@@ -7,7 +7,7 @@ export const LoginRedux = createAsyncThunk('auth/LoginUserAsync', async (payload
     if (response.data.message == "No registered user") {
         return response.data.message
     } else {
-        return response.data[0]
+        return response.data
     }
 });
 
@@ -25,7 +25,10 @@ const initialState = {
     status: 'idle',
     authenticated: false,
     ErrorAuth: '',
-    user: {},
+    Logged: {
+        type: '',
+        data: {}
+    },
 };
 
 export const LoginSlice = createSlice({
@@ -48,12 +51,22 @@ export const LoginSlice = createSlice({
             if (action.payload == 'No registered user') {
                 state.status = 'failed'
             } else {
+                if( action.payload.type == 'driver') {
+                    state.Logged.data = action.payload.driver
+                    state.Logged.type = 'driver';
+                } 
+                if( action.payload.type == 'user') {
+                    state.Logged.type = 'user'
+                    state.user = action.payload.user
+                }
                 state.status = 'success';
-                state.user = action.payload
+                
             } 
+            console.log(action.payload)
         });
         builder.addCase(LoginRedux.rejected, (state, action) => {
             state.status = 'failed';
+            
         });
 
         //-------------------------------------------------------------------

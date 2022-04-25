@@ -174,9 +174,10 @@ const Login = () => {
   };
 
   useEffect(() => {
+    console.log(resultRedux.Logged)
     if (resultRedux.status === 'success') {
       dispatch(setResetStatus())
-      if(resultRedux.user.type === 'user') {
+      if(resultRedux.Logged.type === 'user') {
         navigate('/home/user')
       } else {
         navigate('/home/driver')
@@ -195,9 +196,7 @@ const Login = () => {
     }
   },[resultRedux.status])
 
-
   return (
-
     <div className={classes.container}>
       <div className={classes.card}>
         <img
@@ -210,8 +209,6 @@ const Login = () => {
         <div className={classes.items}>
           <Divider />
         </div>
-
-    {resultRedux.status}
 
         <div className={classes.containerInput}>
          

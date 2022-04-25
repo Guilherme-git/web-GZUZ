@@ -27,7 +27,9 @@ const initialState = {
     confirmation: {
         enable: false
     },
-    orderListed: {},
+    orderListed: {
+    
+    },
     statusOrderListed: 'idle'
 };
 
@@ -35,6 +37,9 @@ export const CreateSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
+        setStatus: (state, action) => {
+            state.orderListed.status = "In progress"
+        },
         setPath: (state, action) => {
             state.pathActive = action.payload
         },
@@ -93,6 +98,6 @@ export const CreateSlice = createSlice({
     },
 });
 
-export const { setPath, setPickupDetails, setDeliveryDetails, setOrderDetails, resetReducer, listOrder, statusOrderListed, orderListed, resetReducerCancelOrder } = CreateSlice.actions;
+export const { setPath, setPickupDetails, setDeliveryDetails, setOrderDetails, resetReducer, listOrder, statusOrderListed, orderListed, resetReducerCancelOrder, setStatus } = CreateSlice.actions;
 
 export default CreateSlice.reducer;

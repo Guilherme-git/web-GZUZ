@@ -41,7 +41,7 @@ export function RoutesMain() {
                     <Route path="/home/user/ordem/create" element={<CreateOrder />} />
                     <Route path="/home/user/ordem/view/:id" element={<ViewOrder />} />
 
-                    {/* {resultRedux.user.type == 'user' &&
+                    {/* {resultRedux.Logged.type == 'user' &&
                         <>
                             <Route path="/home/user" element={<HomeUser />} />
                             <Route path="/home/user/ordem/create" element={<CreateOrder />} />

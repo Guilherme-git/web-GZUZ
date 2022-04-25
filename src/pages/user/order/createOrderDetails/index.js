@@ -532,8 +532,8 @@ export default () => {
     const [observation, setObservation] = useState('');
     const [observationCargo, setObservationCargo] = useState('');
 
-    const [cargas, setCargas] = useState([{
-        carga: '', picture: {}
+    const [loads, setLoads] = useState([{
+        load: '', picture: {}
     }])
     const [dimensao, setDimensao] = useState([
         { altura: '', largura: '', profundidade: '', peso: '', feetOrCentimeter: '', lbsOrKgs: '' }
@@ -546,39 +546,39 @@ export default () => {
     })
 
     useEffect(() => {
-        if (Object.keys(resultRedux.orderDetails.data).length !== 0) {
-            setCargas(resultRedux.orderDetails.data.carga);
-            setDimensao(resultRedux.orderDetails.data.dimensoes);
-            setFeetOrCentimeter(resultRedux.orderDetails.data.tipo_peso);
-            setLbsOrKgs(resultRedux.orderDetails.data.tipo_altura);
-            seTotalWeight(resultRedux.orderDetails.data.peso_total);
-            setSelectedFiles(resultRedux.orderDetails.data.foto);
-            setPurchaseOrder(resultRedux.orderDetails.data.numeros);
-            setObservation(resultRedux.orderDetails.data.observacao);
-            setObservationCargo(resultRedux.orderDetails.data.tipo);
-            setSelectedCars(resultRedux.orderDetails.data.automoveis);
-        }
+        // if (Object.keys(resultRedux.orderDetails.data).length !== 0) {
+        //     setLoads(resultRedux.orderDetails.data.load);
+        //     setDimensao(resultRedux.orderDetails.data.dimensoes);
+        //     setFeetOrCentimeter(resultRedux.orderDetails.data.tipo_peso);
+        //     setLbsOrKgs(resultRedux.orderDetails.data.tipo_altura);
+        //     seTotalWeight(resultRedux.orderDetails.data.peso_total);
+        //     setSelectedFiles(resultRedux.orderDetails.data.foto);
+        //     setPurchaseOrder(resultRedux.orderDetails.data.numeros);
+        //     setObservation(resultRedux.orderDetails.data.observacao);
+        //     setObservationCargo(resultRedux.orderDetails.data.tipo);
+        //     setSelectedCars(resultRedux.orderDetails.data.automoveis);
+        // }
     }, [resultRedux.orderDetails.data])
 
     const addCampos = () => {
-        setCargas([...cargas, { carga: '', picture: {} }])
+        setLoads([...loads, { load: '', picture: {} }])
     }
 
     const mudarCampos = (event, index) => {
         const { value, name } = event.target;
-        let newCarga = [];
-        newCarga.push(...cargas);
-        newCarga[index] = { ...cargas[index], [name]: value }
-        setCargas(newCarga)
+        let newloads = [];
+        newloads.push(...loads);
+        newloads[index] = { ...loads[index], [name]: value }
+        setLoads(newloads)
     }
 
     const mudarCamposPicture = (event, index) => {
         const { name } = event.target;
         const file = event.target.files[0];
-        let newCarga = [];
-        newCarga.push(...cargas);
-        newCarga[index] = { ...cargas[index], [name]: file }
-        setCargas(newCarga)
+        let newloads = [];
+        newloads.push(...loads);
+        newloads[index] = { ...loads[index], [name]: file }
+        setLoads(newloads)
     }
 
     const addDimensao = () => {
@@ -599,10 +599,10 @@ export default () => {
     }
 
     const remover = () => {
-        if (cargas.length > 1) {
-            const arraycargas = [...cargas]
-            arraycargas.pop()
-            setCargas(arraycargas)
+        if (loads.length > 1) {
+            const arrayloads = [...loads]
+            arrayloads.pop()
+            setLoads(arrayloads)
         }
 
         if (dimensao.length > 1) {
@@ -637,7 +637,7 @@ export default () => {
 
     const checkFields = () => {
         if (
-            cargas?.length  === 0 ||
+            loads?.length  === 0 ||
             dimensao?.length === 0 ||
             feetOrCentimeter === '' ||
             lbsOrKgs === '' ||
@@ -652,21 +652,21 @@ export default () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = {
-            cargas: cargas,
-            dimensoes: dimensao,
-            tipo_peso: feetOrCentimeter,
-            tipo_altura: lbsOrKgs,
-            peso_total: totalWeight,
-            foto: selectedFiles,
-            numeros: purchaseOrder,
-            observacao: observation,
-            tipo: observationCargo,
-            automoveis: selectedCars
-        };
-        dispatch(setOrderDetails(data));
+        // const data = {
+        //     loads: loads,
+        //     dimensoes: dimensao,
+        //     tipo_peso: feetOrCentimeter,
+        //     tipo_altura: lbsOrKgs,
+        //     peso_total: totalWeight,
+        //     foto: selectedFiles,
+        //     numeros: purchaseOrder,
+        //     observacao: observation,
+        //     tipo: observationCargo,
+        //     automoveis: selectedCars
+        // };
+        // dispatch(setOrderDetails(data));
 
-        console.log(dimensao)
+        console.log(loads)
     };
 
     return (
@@ -747,28 +747,27 @@ export default () => {
                         <label>{t(TITLE_PICKING_UP_03)}</label>
                         <label>{t(TITLE_PICKING_UP_04)}</label>
                     </div>
-                    {cargas?.map((item, index) => {
+                    {loads?.map((item, index) => {
                         return (
                             <div className="cargo">
                                 <div className={classes.containerCargo}>
                                     <TextField
                                         style={{ flex: 1, width: 300 }}
                                         label={t(TITLE_CARGO)}
-                                        name="carga"
+                                        name="load"
                                         variant="standard"
-                                        value={item.carga}
+                                        value={item.load}
                                         className={classes.cargo}
                                         onChange={(event) => mudarCampos(event, index)}
                                     />
-
-                                    <label htmlFor="contained-button-file">
+                                    <label>
                                         <Input
                                             accept="image/*"
                                             name='picture'
-                                            id="contained-button-file"
                                             multiple
                                             type="file"
                                             onChange={(event) => mudarCamposPicture(event, index)}
+                                            onClick={event =>  event.target.value = null }
                                         />
                                         <Button
                                             className={classes.btnTakePicture}
@@ -780,10 +779,9 @@ export default () => {
                                         </Button>
                                     </label>
 
-                                    <label htmlFor="contained-button-file" style={{ marginLeft: '10px' }}>
+                                    <label style={{ marginLeft: '10px' }}>
                                         <Input
-                                            accept="image/*"
-                                            id="contained-button-file"
+                                            accept="image/*"    
                                             multiple
                                             type="file"
                                             onChange={handleTakePicture}
